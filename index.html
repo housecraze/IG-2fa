@@ -191,7 +191,8 @@
   <div class="floating-btn floating-bio" onclick="randomBio(); openCurrentIG()">🌸</div>
   <div class="floating-btn floating-caption" onclick="randomCaption(); openCurrentIG()">📝</div>
   <div class="floating-btn floating-first" onclick="firstProfile()">⏮</div>
-   <div class="floating-btn floating-list" onclick="showProfileList()">📂</div>
+  <div class="floating-btn floating-list" onclick="showProfileList()">📂</div>
+  <div class="floating-btn floating-list" onclick="lunezaIg2fa()">🙉</div>
 
     <!-- Modal for profile list -->
     <div id="profileModal" class="modal">
@@ -350,6 +351,11 @@
           closeModal();
         }
       }
+
+    function lunezaIg2fa() {
+    window.location.href = "luneza2fa.html";
+    }
+
 
 //Twofactor
     function base32toBytes(base32) {
