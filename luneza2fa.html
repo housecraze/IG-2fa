@@ -5,145 +5,157 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Luneza 2FA</title>
   <style>
-  html, body {
-    height: 100%;
-    margin: 0;
-    overflow: hidden;
-    overscroll-behavior: none;
-  }
-  body {
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #a8edea, #fed6e3);
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    min-height: 100vh;
-    margin: 0;
-    padding-top: 20px;
-  }
-  .container {
-    background: #fff;
-    border-radius: 20px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    padding: 20px;
-    width: 100%;
-    max-width: 450px;
-  }
-  h2, h3 { text-align: center; margin-bottom: 20px; }
+      html, body {
+        height: 100%;
+        margin: 0;
+        overflow: hidden;
+        overscroll-behavior: none;
+      }
+      body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #a8edea, #fed6e3);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      margin: 0;
+      padding-top: 20px;
+    }
+    .container {
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      padding: 20px;
+      width: 100%;
+    }
+    h2 { text-align: center; margin-bottom: 20px; }
 
-  .field { margin: 8px 0; display: flex; align-items: center; }
-  .field label { font-weight: bold; margin-right: 6px; white-space: nowrap; }
-  .field span, .field input { flex: 1; font-size: 15px; }
-  .field input {
-    padding: 4px; border-radius: 6px; border: 1px solid #ccc; display: none;
-  }
-  .edit-btn { background: #ffc107; color: #000; font-size: 12px; padding: 4px 6px; margin-left: 5px; border-radius: 6px; cursor: pointer; }
-  .copy-btn { background: #28a745; color: #fff; font-size: 12px; padding: 4px 6px; margin-left: 5px; border-radius: 6px; cursor: pointer; }
+    .field { margin: 8px 0; display: flex; align-items: center; }
+    .field label { font-weight: bold; margin-right: 6px; white-space: nowrap; }
+    .field span, .field input { flex: 1; font-size: 15px; }
+    .field input {
+      padding: 4px; border-radius: 6px; border: 1px solid #ccc; display: none;
+    }
+    .edit-btn { background: #ffc107; color: #000; font-size: 12px; padding: 4px 6px; margin-left: 5px; border-radius: 6px; cursor: pointer; }
+    .copy-btn { background: #28a745; color: #fff; font-size: 12px; padding: 4px 6px; margin-left: 5px; border-radius: 6px; cursor: pointer; }
 
-  .actions { margin-top: 15px; text-align: center; }
-  button {
-    margin: 5px; padding: 10px 14px; border: none; border-radius: 10px;
-    cursor: pointer; font-size: 14px; transition: 0.3s;
-  }
-  .nav-btn { background: #007bff; color: #fff; }
-  .save-btn { background: #17a2b8; color: #fff; }
-  .ig-btn { background: #e1306c; color: #fff; }
+    .actions { margin-top: 15px; text-align: center; }
+    button {
+      margin: 5px; padding: 10px 14px; border: none; border-radius: 10px;
+      cursor: pointer; font-size: 14px; transition: 0.3s;
+    }
+    .nav-btn { background: #007bff; color: #fff; }
+    .save-btn { background: #17a2b8; color: #fff; }
+    .ig-btn { background: #e1306c; color: #fff; }
 
-  .floating-btn {
-    position: fixed; display: flex; justify-content: center; align-items: center;
-    border-radius: 50%; font-size: 22px; cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3); color: white;
-  }
+    .floating-btn {
+      position: fixed; bottom: 20px; width: 50px; height: 50px;
+      display: flex; justify-content: center; align-items: center;
+      border-radius: 50%; font-size: 22px; cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3); color: white;
+    }
+    .floating-refresh { bottom: 20px; right: 20px; background: #ff4081; }
+    .floating-random { bottom: 20px; right: 80px; background: #3f51b5; }
+    .floating-bio { bottom: 20px; right: 140px; background: #9c27b0; }
+    .floating-caption { bottom: 20px; right: 200px; background: #009688; }
+    .floating-first {  bottom: 20px; right: 260px;  background: #ff9800; }
+    .floating-list { bottom: 20px; right: 320px; background: #4caf50; }
+    
+    .floating-copyUN { bottom: 80px; right: 20px; background: #4caf50; }
+    .floating-CopyunT { bottom: 80px; right: 80px; background: #ff9800; }
+    .floating-Pw { bottom: 80px; right: 140px; background: #009688; }
 
-  /* Floating positions */
-  .floating-refresh { bottom: 20px; right: 20px; background: #ff4081; }
-  .floating-random { bottom: 20px; right: 80px; background: #3f51b5; }
-  .floating-bio { bottom: 20px; right: 140px; background: #9c27b0; }
-  .floating-caption { bottom: 20px; right: 200px; background: #009688; }
-  .floating-first {  bottom: 20px; right: 260px;  background: #ff9800; }
-  .floating-list { bottom: 20px; right: 320px; background: #4caf50; }
+    .floating-CrC { bottom: 140px; right: 260px; background: #4caf50; }
+    .floating-TGN { bottom: 140px; right: 200px; background: #4caf50; }
+    .floating-TGUN { bottom: 140px; right: 140px; background: #4caf50; }
+    .floating-TGAU { bottom: 140px; right: 80px; background: #4caf50; }
+    .floating-TGP { bottom: 140px; right: 20px; background: #4caf50; }
 
-  .floating-copyUN { bottom: 80px; right: 20px; background: #4caf50; }
-  .floating-CopyunT { bottom: 80px; right: 80px; background: #ff9800; }
-  .floating-Pw { bottom: 80px; right: 140px; background: #009688; }
+    .floating-NxOnly { bottom: 200px; right: 80px; background: #3f51b5; }
+    .floating-Next { bottom: 200px; right: 140px; background: #3f51b5; }
+    .floating-Prev { bottom: 200px; right: 200px; background: #3f51b5; }
+    .floating-Kill { bottom: 200px; right: 260px; background: #3f51b5; }
 
-  .floating-CrC { bottom: 140px; right: 260px; background: #4caf50; }
-  .floating-TGN { bottom: 140px; right: 200px; background: #4caf50; }
-  .floating-TGUN { bottom: 140px; right: 140px; background: #4caf50; }
-  .floating-TGAU { bottom: 140px; right: 80px; background: #4caf50; }
-  .floating-TGP { bottom: 140px; right: 20px; background: #4caf50; }
-
-  .floating-NxOnly { bottom: 200px; right: 80px; background: #3f51b5; }
-  .floating-Next { bottom: 200px; right: 140px; background: #3f51b5; }
-  .floating-Prev { bottom: 200px; right: 200px; background: #3f51b5; }
-  .floating-Kill { bottom: 200px; right: 260px; background: #3f51b5; }
-
-  /* Toast */
-  .toast {
-    position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%);
-    background: rgba(0,0,0,0.8); color: white; padding: 10px 16px;
-    border-radius: 8px; font-size: 14px; opacity: 0; transition: opacity 0.3s ease;
-  }
-  .toast.show { opacity: 1; }
-
-  /* Modal styling */
-  .modal {
-    display: none; 
-    position: fixed; 
-    z-index: 999; 
-    left: 0; top: 0;
-    width: 100%; height: 100%; 
-    background-color: rgba(0,0,0,0.6);
-  }
-  .modal-content {
-    background: #fff;
-    margin: 10% auto;
-    padding: 20px;
-    border-radius: 12px;
-    width: 80%;
-    max-width: 400px;
-    max-height: 70%;
-    overflow-y: auto;
-  }
-  .modal-content h3 { margin-top: 0; }
-  .modal-content ul { list-style: none; padding: 0; }
-  .modal-content li {
-    padding: 8px; margin: 5px 0;
-    background: #f5f5f5; border-radius: 6px;
-    cursor: pointer; transition: 0.2s;
-  }
-  .modal-content li:hover { background: #e0e0e0; }
-  .close { float: right; font-size: 22px; cursor: pointer; font-weight: bold; }
-
-  /* Two-factor */
-  .row { margin: 12px 0; }
-  .code-box { display: flex; justify-content: center; align-items: center; gap: 10px; margin-top: 20px; }
-  .code { font-size: 36px; font-weight: bold; letter-spacing: 4px; }
-  .small { font-size: 12px; color: #666; margin-top: 5px; }
-</style>
-
+    
+    /* Toast */
+    .toast {
+      position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%);
+      background: rgba(0,0,0,0.8); color: white; padding: 10px 16px;
+      border-radius: 8px; font-size: 14px; opacity: 0; transition: opacity 0.3s ease;
+    }
+    .toast.show { opacity: 1; }
+    
+      /* Modal styling */
+      .modal {
+        display: none; 
+        position: fixed; 
+        z-index: 999; 
+        left: 0; top: 0;
+        width: 100%; height: 100%; 
+        background-color: rgba(0,0,0,0.6);
+      }
+      .modal-content {
+        background: #fff;
+        margin: 10% auto;
+        padding: 20px;
+        border-radius: 12px;
+        width: 80%;
+        max-width: 400px;
+        max-height: 70%;
+        overflow-y: auto;
+      }
+      .modal-content h3 { margin-top: 0; }
+      .modal-content ul { list-style: none; padding: 0; }
+      .modal-content li {
+        padding: 8px; margin: 5px 0;
+        background: #f5f5f5; border-radius: 6px;
+        cursor: pointer; transition: 0.2s;
+      }
+      .modal-content li:hover { background: #e0e0e0; }
+      .close {
+        float: right; font-size: 22px;
+        cursor: pointer; font-weight: bold;
+      }
+    /* Twofactor */
+      .row {
+      margin: 12px 0;
+    }
+    .code-box {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .code {
+      font-size: 36px;
+      font-weight: bold;
+      letter-spacing: 4px;
+    }
+    .small {
+      font-size: 12px;
+      color: #666;
+      margin-top: 5px;
+    }
+  </style>
 </head>
 <body>
+  <div class="container">
+    <h3>Profile</h3>
 
-  <h1>Luneza Profiles</h1>
-<div class="container">
-  <h3>Profile</h3>
-
-  <div class="field"><label>Name:</label><span id="name"></span></div>
-  <div class="field">
-    <label>Username:</label>
-    <span id="oldusername"></span>
+    <div class="field"><label>Name:</label><span id="name"></span>
+    </div>
+    <div class="field"><label>Username:</label><span id="oldusername"></span>
     <input id="oldusernameInput">
-  </div>
-  <div class="field">
-    <label>Authenticator:</label>
-    <button id="copy2fa">Copy</button>
-    <span id="newusername"></span>
+    </div>
+    <div class="field"><label>Authenticator:</label><button id="copy2fa">Copy</button><span id="newusername"></span>
     <input id="newusernameInput">
-  </div>
-  <div class="field"><label>Password:</label><span id="password"></span></div>
+    </div>
+    <div class="field"><label>Password:</label><span id="password"></span>
+    </div>
 
-  <!-- Two-factor -->
+     
+    <!-- Twofac -->
   <div class="row">
     <input id="secret" placeholder="Enter Base32 Secret (e.g. JBSW...)" style="width:100%" />
   </div>
@@ -155,48 +167,321 @@
   </div>
 
   <div class="small">Next update in <span id="countdown">—</span>s</div>
-</div>
-
-<!-- Floating buttons -->
-<div class="floating-btn floating-NxOnly" onclick="nextProfile()">=></div>
-<div class="floating-btn floating-Next" onclick="runCont(); nextProfile()">Nx</div>
-<div class="floating-btn floating-Prev" onclick="prevProfile()">Pv</div>
-<div class="floating-btn floating-Kill" onclick="window.location='catscript://run?file=/path/to/trial.py'">KA</div>
-
-<div class="floating-btn floating-TGP" onclick="copyText('password'); openCurrentIG()">IGP</div>
-<div class="floating-btn floating-TGAU" onclick="copyText('newusername')">AU</div>
-<div class="floating-btn floating-TGUN" onclick="copyText('oldusername'); openCurrentIG()">UN</div>
-<div class="floating-btn floating-TGN" onclick="copyText('name'); openCurrentIG()">Na</div>
-<div class="floating-btn floating-CrC" onclick="copyText('oldusername'); Createcon()">Cn</div>
-
-<div class="floating-btn floating-copyUN" onclick="copyText('oldusername'); runCreateTH()">CU</div>
-<div class="floating-btn floating-CopyunT" onclick="copyText('oldusername'); openCurrentTG()">ThU</div>
-<div class="floating-btn floating-Pw" onclick="copyText('password'); openCurrentTG()">Pw</div>
-
-<div class="floating-btn floating-refresh" onclick="loadProfiles()">⟳</div>
-<div class="floating-btn floating-random" onclick="randomCelebrity()">🎲</div>
-<div class="floating-btn floating-bio" onclick="randomBio(); openCurrentIG()">🌸</div>
-<div class="floating-btn floating-caption" onclick="randomCaption(); openCurrentIG()">📝</div>
-<div class="floating-btn floating-first" onclick="firstProfile()">⏮</div>
-<div class="floating-btn floating-list" onclick="showProfileList()">📂</div>
-<div class="floating-btn floating-list" onclick="lunezaIg2fa()">🙉</div>
-
-<!-- Modal for profile list -->
-<div id="profileModal" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal()">&times;</span>
-    <h3>Select a Profile</h3>
-    <ul id="profileList"></ul>
+    
   </div>
-</div>
+  <!-- Floating buttons -->
+  <div class="floating-btn floating-NxOnly" onclick="nextProfile()">=></div>
+  <div class="floating-btn floating-Next" onclick="runCont(); nextProfile()">Nx</div>
+  <div class="floating-btn floating-Prev" onclick="prevProfile()">Pv</div>
+  <div class="floating-btn floating-Kill" onclick="window.location='catscript://run?file=/path/to/trial.py">KA</div>
+  
+  <div class="floating-btn floating-TGP" onclick="copyText('password'); openCurrentIG()">IGP</div>
+  <div class="floating-btn floating-TGAU" onclick="copyText('newusername')">AU</div>
+  <div class="floating-btn floating-TGUN" onclick="copyText('oldusername'); openCurrentIG()">UN</div>
+  <div class="floating-btn floating-TGN" onclick="copyText('name'); openCurrentIG()"">Na</div>
+  <div class="floating-btn floating-CrC" onclick="copyText('oldusername'); Createcon()"">Cn</div>
+  
+  <div class="floating-btn floating-copyUN" onclick="copyText('oldusername'); runCreateTH()">CU</div>
+  <div class="floating-btn floating-CopyunT" onclick="copyText('oldusername'); openCurrentTG()">ThU</div>
+  <div class="floating-btn floating-Pw" onclick="copyText('password'); openCurrentTG()">Pw</div>
 
-<div id="toast" class="toast"></div>
+  
+  <div class="floating-btn floating-refresh" onclick="loadProfiles()">⟳</div>
+  <div class="floating-btn floating-random" onclick="randomCelebrity()">🎲</div>
+  <div class="floating-btn floating-bio" onclick="randomBio(); openCurrentIG()">🌸</div>
+  <div class="floating-btn floating-caption" onclick="randomCaption(); openCurrentIG()">📝</div>
+  <div class="floating-btn floating-first" onclick="firstProfile()">⏮</div>
+  <div class="floating-btn floating-list" onclick="showProfileList()">📂</div>
+  <div class="floating-btn floating-list" onclick="lunezaIg2fa()">🙉</div>
 
-  <!-- Set API for Luneza page -->
+    <!-- Modal for profile list -->
+    <div id="profileModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h3>Select a Profile</h3>
+        <ul id="profileList"></ul>
+      </div>
+    </div>
+
+  <div id="toast" class="toast"></div>
+
   <script>
-    window.overrideApiUrl = "https://script.google.com/macros/s/lunezaapi/exec";
-  </script>
+    const apiUrl = "https://script.google.com/macros/s/AKfycbz-z3RrU2a9BTA4wQSCHve3pzUkB0-JjLFKpZFAUYMv7hWtqhijN-npHo03UojGxor5/exec";
+    let profiles = [], currentIndex = 0;
 
-  <script src="shared.js"></script>
+    async function loadProfiles() {
+    const res = await fetch(apiUrl);
+    profiles = await res.json();
+    currentIndex = parseInt(localStorage.getItem("currentIndex") || 0);
+    if(currentIndex >= profiles.length) currentIndex = 0;
+    displayProfile();
+  }
+  
+  function displayProfile() {
+    if(!profiles.length) return;
+    const p = profiles[currentIndex];
+    ["name","oldusername","newusername","password"].forEach(f=>document.getElementById(f).textContent=p[f]||"");
+    localStorage.setItem("currentIndex", currentIndex);
+  }
+
+    function prevProfile(){ if(currentIndex>0){ currentIndex--; displayProfile(); } }
+    function nextProfile(){ if(currentIndex<profiles.length-1){ currentIndex++; displayProfile(); } }
+    function Createcon(){ window.location.href="shortcuts://run-shortcut?name=CreateIGCon"; }
+    function runCreateTH(){ window.location.href="shortcuts://run-shortcut?name=CreateTh"; }
+    function runCont(){ window.location.href="shortcuts://run-shortcut?name=NextIGTH"; }
+
+    function toggleEdit(field){
+      const span=document.getElementById(field), input=document.getElementById(field+"Input");
+      if(input.style.display==="none"){ input.value=span.textContent; span.style.display="none"; input.style.display="inline-block"; }
+      else { span.textContent=input.value; span.style.display="inline-block"; input.style.display="none"; }
+    }
+
+    async function saveEdits(){
+      const p=profiles[currentIndex];
+      const oldusername=document.getElementById("oldusernameInput").style.display!=="none"?document.getElementById("oldusernameInput").value:p.oldusername;
+      const newusername=document.getElementById("newusernameInput").style.display!=="none"?document.getElementById("newusernameInput").value:p.newusername;
+      const updated={ id:p.id, oldusername, newusername };
+      const res=await fetch(apiUrl,{ method:"POST", body:JSON.stringify(updated), headers:{"Content-Type":"application/json"} });
+      const result=await res.json();
+      if(result.success){ showToast("Saved!"); loadProfiles(); }
+      else { showToast("Error: "+result.message); }
+    }
+
+    function openCurrentIG() {
+    window.open(`https://Instagram.com/`, "_blank");
+    }
+
+    function openCurrentTG() {
+    window.open(`https://Threads.com/`, "_blank");
+    }
+    
+
+    function copyText(field){
+      const text=document.getElementById(field).textContent;
+      navigator.clipboard.writeText(text);
+      showToast(field+" copied!");
+    }
+
+    function showToast(msg){
+      const t=document.getElementById("toast");
+      t.textContent=msg; t.classList.add("show");
+      setTimeout(()=>{ t.classList.remove("show"); },1000);
+    }
+
+    // Random celebrity
+    const celebrities=[ "Selena Gomez","Kylie Jenner","Dwayne Johnson","Ariana Grande","Kim Kardashian","Beyoncé","Khloé Kardashian","Kendall Jenner","Taylor Swift","Jennifer Lopez","Nicki Minaj","Miley Cyrus","Katy Perry","Zendaya","Kevin Hart","Cardi B","LeBron James","Demi Lovato","Leonardo DiCaprio","Vin Diesel","Zac Efron","Will Smith","Tom Cruise","Angelina Jolie","Brad Pitt","Scarlett Johansson","Chris Evans","Chris Hemsworth","Robert Downey Jr.","Mark Ruffalo","Jeremy Renner","Tom Holland","Zendaya","Timothée Chalamet","Florence Pugh","Natalie Portman","Anne Hathaway","Emma Stone","Emma Watson","Margot Robbie","Gal Gadot","Halle Berry","Sandra Bullock","Julia Roberts","Reese Witherspoon","Jennifer Aniston","Courteney Cox","Matthew Perry","Lisa Kudrow","Matt LeBlanc","David Schwimmer","Steve Carell","John Krasinski","Mindy Kaling","BJ Novak","Rainn Wilson","Ed Helms","Jenna Fischer","Ellie Kemper","Jonah Hill","Channing Tatum","Matthew McConaughey","Jake Gyllenhaal","Ryan Reynolds","Ryan Gosling","Blake Lively","Jessica Alba","Eva Mendes","Megan Fox","Shia LaBeouf","Kristen Stewart","Robert Pattinson","Taylor Lautner","Dakota Johnson","Jamie Dornan","Jennifer Lawrence","Josh Hutcherson","Liam Hemsworth","Woody Harrelson","Donald Glover","Childish Gambino","Chance the Rapper","Travis Scott","Post Malone","Billie Eilish","Olivia Rodrigo","Doja Cat","Saweetie","Lil Nas X","Snoop Dogg","Dr. Dre","Ice Cube","Eminem","50 Cent","Jay-Z","Kanye West","Travis Barker","Machine Gun Kelly","Lana Del Rey","Halsey"];
+    function randomCelebrity(){
+  const rand = celebrities[Math.floor(Math.random() * celebrities.length)];
+
+  // Copy to clipboard
+  navigator.clipboard.writeText(rand);
+
+  // Open Instagram search
+  const searchUrl = "https://www.instagram.com/explore/search/keyword/?q=" + encodeURIComponent(rand);
+  window.open(searchUrl, "_blank");
+
+  // Toast message
+  showToast("Opening IG Search: " + rand);
+}
+
+    
+    // function randomCelebrity(){
+    // const rand=celebrities[Math.floor(Math.random()*celebrities.length)];
+    // navigator.clipboard.writeText(rand);
+    // showToast("Copied: "+rand);
+    // }
+
+    // Random bio
+    const girlyEmojis=["💖","💕","🌸","✨","🌷","💅","👑","💓","🦋","💜"];
+    function randomBio(){
+      const e1=girlyEmojis[Math.floor(Math.random()*girlyEmojis.length)];
+      const e2=girlyEmojis[Math.floor(Math.random()*girlyEmojis.length)];
+      const bio=`18 ${e1}\nSingle ${e2}`;
+      navigator.clipboard.writeText(bio);
+      showToast("Bio copied!");
+    }
+
+    // Random caption
+    const captions=[
+      "no reason, just liked these","this light felt kinda nice","another day, another outfit i almost didn’t wear",
+      "nothing crazy, just me","this felt like a good time to post","little snapshot of life rn","things are okay and that’s enough",
+      "thought these looked kinda cute","just going with it","small things are the big things","no big caption, just vibes",
+      "in my own little world","guess who remembered to take pics for once","this week in a few photos",
+      "not much going on but that’s fine","just here, doing my best","felt kinda peaceful",
+      "no idea what i’m doing but okay","life lately, kinda like this","trying to stay present","quiet moments and blurry photos",
+      "moodboard: this","little calm in the chaos","brain = fog, photos = cute","looked up and liked the view",
+      "current setting: soft","just a few saved memories","this version of me feels good","casually existing"
+    ];
+    function randomCaption(){
+      const rand=captions[Math.floor(Math.random()*captions.length)];
+      navigator.clipboard.writeText(rand);
+      showToast("Caption copied!");
+    }
+    function firstProfile() {
+      currentIndex = 0;
+      displayProfile();
+      showToast("Back to first profile");
+    }
+
+    function showProfileList() {
+        const modal = document.getElementById("profileModal");
+        const list = document.getElementById("profileList");
+        list.innerHTML = "";
+        profiles.forEach((p, i) => {
+          const li = document.createElement("li");
+          li.textContent = p.name || `Profile ${i+1}`;
+          li.onclick = () => {
+            currentIndex = i;
+            displayProfile();
+            closeModal();
+          };
+          list.appendChild(li);
+        });
+        modal.style.display = "block";
+      }
+
+      function closeModal() {
+        document.getElementById("profileModal").style.display = "none";
+      }
+
+      // Close modal if clicked outside
+      window.onclick = function(event) {
+        const modal = document.getElementById("profileModal");
+        if (event.target === modal) {
+          closeModal();
+        }
+      }
+
+    function lunezaIg2fa() {
+    window.location.href = "luneza2fa.html";
+    }
+
+
+//Twofactor
+    function base32toBytes(base32) {
+  base32 = (base32 || '').replace(/=+$/,'').replace(/[^A-Z2-7]/gi,'').toUpperCase();
+  const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+  let bits = 0, value = 0, bytes = [];
+  for (let i=0; i < base32.length; i++) {
+    const idx = alphabet.indexOf(base32[i]);
+    if (idx === -1) continue;
+    value = (value << 5) | idx;
+    bits += 5;
+    if (bits >= 8) {
+      bits -= 8;
+      bytes.push((value >> bits) & 0xFF);
+    }
+  }
+  return new Uint8Array(bytes);
+}
+
+/* Counter to buffer */
+function counterToBuffer(counter) {
+  const buf = new ArrayBuffer(8);
+  const view = new DataView(buf);
+  const high = Math.floor(counter / 2**32);
+  const low = counter >>> 0;
+  view.setUint32(0, high);
+  view.setUint32(4, low);
+  return buf;
+}
+
+/* HMAC-SHA1 */
+async function hmacSha1(keyBytes, counterBuf) {
+  const cryptoKey = await crypto.subtle.importKey(
+    'raw',
+    keyBytes,
+    { name: 'HMAC', hash: 'SHA-1' },
+    false,
+    ['sign']
+  );
+  const sig = await crypto.subtle.sign('HMAC', cryptoKey, counterBuf);
+  return new Uint8Array(sig);
+}
+
+/* Truncate */
+function truncate(hmacBytes, digits) {
+  const offset = hmacBytes[hmacBytes.length - 1] & 0x0f;
+  const code = ((hmacBytes[offset] & 0x7f) << 24) |
+               ((hmacBytes[offset+1] & 0xff) << 16) |
+               ((hmacBytes[offset+2] & 0xff) << 8) |
+               (hmacBytes[offset+3] & 0xff);
+  return (code % 10**digits).toString().padStart(digits, '0');
+}
+
+/* Generate TOTP (fixed 30s, 6 digits) */
+async function generateTOTP(secret) {
+  const keyBytes = base32toBytes(secret);
+  if (keyBytes.length === 0) return null;
+
+  const period = 30;
+  const digits = 6;
+  const counter = Math.floor(Date.now() / 1000 / period);
+
+  const hmac = await hmacSha1(keyBytes, counterToBuffer(counter));
+  return truncate(hmac, digits);
+}
+
+/* UI elements */
+const secretEl = document.getElementById('secret');
+const codeEl = document.getElementById('totp');
+const countdownEl = document.getElementById('countdown');
+const copyBtn = document.getElementById('copyBtn');
+const copy2fa = document.getElementById('copy2fa');
+
+async function update() {
+  const secret = secretEl.value.trim();
+  const period = 30;
+
+  const now = Math.floor(Date.now() / 1000);
+  const remaining = period - (now % period);
+  countdownEl.textContent = remaining;
+
+  if (!secret) {
+    codeEl.textContent = "------";
+    return;
+  }
+
+  const code = await generateTOTP(secret);
+  codeEl.textContent = code || "invalid";
+}
+
+setInterval(update, 1000);
+update();
+
+/* Copy button */
+copyBtn.addEventListener('click', async () => {
+  const code = codeEl.textContent.trim();
+  if (code && code !== "------" && code !== "invalid") {
+    await navigator.clipboard.writeText(code);
+    copyBtn.textContent = "Copied!";
+    setTimeout(() => copyBtn.textContent = "Copy", 1200);
+  }
+});
+
+copy2fa.addEventListener('click', async () => {
+  const authValue = document.getElementById("newusername").textContent.trim();
+  if (authValue) {
+    await navigator.clipboard.writeText(authValue);
+    copy2fa.textContent = "Copied!";
+    setTimeout(() => copy2fa.textContent = "Copy", 1200);
+  }
+});
+
+    
+const pasteBtn = document.getElementById('pasteBtn');
+
+pasteBtn.addEventListener('click', async () => {
+  try {
+    const text = await navigator.clipboard.readText();
+    if (text) secretEl.value = text.trim();
+  } catch (e) {
+    alert("Clipboard paste not allowed by browser.");
+  }
+});
+    
+loadProfiles();
+    
+  </script>
 </body>
 </html>
