@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Index Page</title>
+  <link rel="stylesheet" href="styles.css"> <!-- optional -->
+</head>
+<body>
+
+  <h1>Profiles</h1>
+
+  <div>
+    <button onclick="prevProfile()">Prev</button>
+    <button onclick="nextProfile()">Next</button>
+    <button onclick="showProfileList()">All Profiles</button>
+  </div>
+
+  <p>Name: <span id="name"></span></p>
+  <p>Old Username: <span id="oldusername"></span></p>
+  <p>New Username: <span id="newusername"></span></p>
+  <p>Password: <span id="password"></span></p>
+
+  <div id="profileModal" style="display:none;">
+    <ul id="profileList"></ul>
+    <button onclick="closeModal()">Close</button>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <!-- TOTP inputs -->
+  <input type="text" id="secret" placeholder="Enter secret">
+  <div id="totp">------</div>
+  <div id="countdown">0</div>
+  <button id="copyBtn">Copy</button>
+  <button id="copy2fa">Copy 2FA</button>
+  <button id="pasteBtn">Paste</button>
+
+  <!-- Set API for index page -->
+  <script>
+    window.overrideApiUrl = "https://script.google.com/macros/s/AKfycbwGm4ouDR7CNIhDhdosW8oCIn_apcAm_PBiDoDCyKJp_6Ogg3gvZYM2CTK0Zg2xASP1gQ/exec";
+  </script>
+
+  <script src="shared.js"></script>
+</body>
+</html>
