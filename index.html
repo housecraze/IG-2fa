@@ -148,7 +148,7 @@
     <div class="field"><label>Username:</label><span id="oldusername"></span>
     <input id="oldusernameInput">
     </div>
-    <div class="field"><label>Authenticator:</label><span id="newusername"></span>
+    <div class="field"><label>Authenticator:</label><button id="copy2fa">Copy</button><span id="newusername"></span>
     <input id="newusernameInput">
     </div>
     <div class="field"><label>Password:</label><span id="password"></span>
@@ -205,7 +205,7 @@
   <div id="toast" class="toast"></div>
 
   <script>
-    const apiUrl = "https://script.google.com/macros/s/AKfycbwGm4ouDR7CNIhDhdosW8oCIn_apcAm_PBiDoDCyKJp_6Ogg3gvZYM2CTK0Zg2xASP1gQ/exec";
+    const apiUrl = "https://script.google.com/macros/s/AKfycbz-z3RrU2a9BTA4wQSCHve3pzUkB0-JjLFKpZFAUYMv7hWtqhijN-npHo03UojGxor5/exec";
     let profiles = [], currentIndex = 0;
 
     async function loadProfiles() {
@@ -421,6 +421,7 @@ const secretEl = document.getElementById('secret');
 const codeEl = document.getElementById('totp');
 const countdownEl = document.getElementById('countdown');
 const copyBtn = document.getElementById('copyBtn');
+const copy2fa = document.getElementById('copy2fa');
 
 async function update() {
   const secret = secretEl.value.trim();
@@ -451,6 +452,16 @@ copyBtn.addEventListener('click', async () => {
     setTimeout(() => copyBtn.textContent = "Copy", 1200);
   }
 });
+
+copy2fa.addEventListener('click', async () => {
+  const authValue = document.getElementById("newusername").textContent.trim();
+  if (authValue) {
+    await navigator.clipboard.writeText(authValue);
+    copy2fa.textContent = "Copied!";
+    setTimeout(() => copy2fa.textContent = "Copy", 1200);
+  }
+});
+
     
 const pasteBtn = document.getElementById('pasteBtn');
 
