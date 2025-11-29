@@ -8,18 +8,19 @@
       html, body {
         height: 100%;
         margin: 0;
-        overflow: hidden;
+        overflow: auto;
         overscroll-behavior: none;
       }
       body {
       font-family: Arial, sans-serif;
       background: linear-gradient(135deg, #fbb07c, #e98ab0, #a87fcf, #7c92e0);
-      display: flex;
+      display: block;
       justify-content: center;
       align-items: flex-start;
       min-height: 100vh;
       margin: 0;
       padding-top: 20px;
+	 
     }
     .container {
       background: linear-gradient(135deg, #e0f7fa, #fff9c4);
@@ -48,51 +49,157 @@
     .nav-btn { background: #007bff; color: #fff; }
     .save-btn { background: #17a2b8; color: #fff; }
     .ig-btn { background: #e1306c; color: #fff; }
+	
+	
+/* main row: container + side buttons */
+#mainRow {
+  display: flex;
+  gap: 20px; /* space between container and side buttons */
+  align-items: flex-start;
+}
 
-    .floating-btn {
-      position: fixed; bottom: 20px; width: 50px; height: 50px;
-      display: flex; justify-content: center; align-items: center;
-      border-radius: 50%; font-size: 22px; cursor: pointer;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3); color: white;
+/* side buttons: stick next to container */
+#sideBtns {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+
+#advancedButtons,
+#threadsButtons,
+#DataBtn1,
+#utilityButtons {
+  display: flex;
+  flex-wrap: nowrap;        /* prevent stacking */
+  justify-content: flex-end; /* align buttons to the right */
+  gap: 10px;
+  margin-top: 15px;
+  width: 100%;       /* full width so justify-content works */
+  padding-right: 10px;
+}
+
+
+#belowWrapper {
+  width: 100%;
+  display: block;
+  margin-top: 20px;
+  
+}
+
+.floating-btn {
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 14px;
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.floating-NxOnly:hover, .floating-Next:hover, .floating-Prev:hover {
+  opacity: 0.85;
+  transform: scale(1.05);
+}
+
+/* Navigation Buttons */
+.floating-NxOnly, .floating-Next, .floating-Prev {
+  background: #3f51b5;
+  color: white;
+  padding: 10px 14px;
+  border-radius: 10px;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 0.3s;
+}
+
+/* Utility Buttons */
+.floating-refresh  { background: #ff4081; }
+.floating-random   { background: #3f51b5; }
+.floating-bio      { background: #9c27b0; }
+.floating-caption  { background: #009688; }
+.floating-first    { background: #ff9800; }
+.floating-list     { background: #4caf50; }
+
+/* Threads Buttons */
+.floating-copyUN   { background: #4caf50; }
+.floating-CopyunT  { background: #ff9800; }
+.floating-Pw       { background: #009688; }
+
+/* Advanced Buttons */
+.floating-CrC      { background: linear-gradient(to right, #833ab4, #fd1d1d); }
+.floating-TGN      { background: linear-gradient(to right, #fd1d1d, #fcb045); }
+.floating-TGUN     { background: linear-gradient(to right, #fcb045, #833ab4); }
+.floating-TGAU     { background: linear-gradient(to right, #833ab4, #fd1d1d, #fcb045); }
+.floating-TGP      { background: linear-gradient(to right, #fd1d1d, #833ab4, #fcb045); }
+
+/* Optional: hover effect for nicer interaction */
+.floating-btn:hover {
+  opacity: 0.85;
+  transform: scale(1.05);
+}
+
+
+/* Twofactor */
+      .row {
+      margin: 12px 0;
     }
-    .floating-refresh { bottom: 20px; right: 20px; background: #ff4081; }
-    .floating-random { bottom: 20px; right: 80px; background: #3f51b5; }
-    .floating-bio { bottom: 20px; right: 140px; background: #9c27b0; }
-    .floating-caption { bottom: 20px; right: 200px; background: #009688; }
-    .floating-first {  bottom: 20px; right: 260px;  background: #ff9800; }
-    .floating-list { bottom: 20px; right: 320px; background: #4caf50; }
-    
-    .floating-copyUN { bottom: 80px; right: 20px; background: #4caf50; }
-    .floating-CopyunT { bottom: 80px; right: 80px; background: #ff9800; }
-    .floating-Pw { bottom: 80px; right: 140px; background: #009688; }
-
-    .floating-CrC  { bottom:140px; right:260px; background: linear-gradient(to right, #833ab4, #fd1d1d); }
-.floating-TGN  { bottom:140px; right:200px; background: linear-gradient(to right, #fd1d1d, #fcb045); }
-.floating-TGUN { bottom:140px; right:140px; background: linear-gradient(to right, #fcb045, #833ab4); }
-.floating-TGAU { bottom:140px; right:80px;  background: linear-gradient(to right, #833ab4, #fd1d1d, #fcb045); }
-.floating-TGP  { bottom:140px; right:20px;  background: linear-gradient(to right, #fd1d1d, #833ab4, #fcb045); }
-
-
-
-    .floating-NxOnly { bottom: 200px; right: 80px; background: #3f51b5; }
-    .floating-Next { bottom: 200px; right: 140px; background: #3f51b5; }
-    .floating-Prev { bottom: 200px; right: 200px; background: #3f51b5; }
-    .floating-Kill { bottom: 200px; right: 260px; background: #3f51b5; }
+    .code-box {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      margin-top: 15px;
+    }
+    .code {
+      font-size: 36px;
+      font-weight: bold;
+      letter-spacing: 4px;
+    }
+    .small {
+      font-size: 12px;
+      color: #666;
+      margin-top: 5px;
+    }
+	#ipContainer {
+      font-size: 18px;
+      margin-bottom: 5px;
+	  display: flex;           /* enables flex layout */
+  flex-direction: column;  /* stack items vertically */
+  align-items: center;     /* horizontal centering */
+  justify-content: center;
+    }
 
     
     /* Toast */
     .toast {
-      position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%);
-      background: rgba(0,0,0,0.8); color: white; padding: 10px 16px;
-      border-radius: 8px; font-size: 14px; opacity: 0; transition: opacity 0.3s ease;
-    }
+  position: fixed;
+  bottom: 90px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,0.8);
+  color: white;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 10000; /* higher than floating buttons */
+}
+
     .toast.show { opacity: 1; }
     
       /* Modal styling */
       .modal {
         display: none; 
         position: fixed; 
-        z-index: 999; 
+        z-index: 10001; 
         left: 0; top: 0;
         width: 100%; height: 100%; 
         background-color: rgba(0,0,0,0.6);
@@ -119,27 +226,7 @@
         float: right; font-size: 22px;
         cursor: pointer; font-weight: bold;
       }
-    /* Twofactor */
-      .row {
-      margin: 12px 0;
-    }
-    .code-box {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 10px;
-      margin-top: 15px;
-    }
-    .code {
-      font-size: 36px;
-      font-weight: bold;
-      letter-spacing: 4px;
-    }
-    .small {
-      font-size: 12px;
-      color: #666;
-      margin-top: 5px;
-    }
+    
 	
 	#newusername {
   cursor: pointer;
@@ -151,24 +238,13 @@
   background: #f1f1f1;
 }
 
-#threadsButtons, #utilityButtons, #advancedButtons {
-  display: none;
+
 }
-
-    #ipContainer {
-      font-size: 18px;
-      margin-bottom: 5px;
-	  display: flex;           /* enables flex layout */
-  flex-direction: column;  /* stack items vertically */
-  align-items: center;     /* horizontal centering */
-  justify-content: center;
-    }
-	
-	
-
   </style>
 </head>
 <body>
+<!-- MAIN ROW: container + side buttons -->
+<div id="mainRow">
   <div class="container">
     <h3>Jayne Profile</h3>
 
@@ -190,7 +266,7 @@
     <!-- Twofac -->
   <div class="row" style="display:flex; gap:10px; align-items:center;">
     <input id="secret" placeholder="Enter Base32 Secret (e.g. JBSW...)" style="flex:1;" />
-    <button onclick="send2FAToSheet()" style="padding:6px 12px;">Send 2FA</button>
+    <button id="btn2fa" onclick="send2FAToSheet()" style="padding:6px 12px;">Send 2FA</button>
 	
   </div>
   
@@ -213,56 +289,52 @@
   <div id="ip">Loading...</div>
   <button id="refreshBtn" onclick="refreshAndOpen()">🔄 Refresh IP + Check</button>
 </div>
-
   </div>
-  
-  
-	
-	
-  <!-- Floating buttons -->
-  <div class="floating-btn floating-NxOnly" onclick="nextProfile()">=></div>
-  <div class="floating-btn floating-Next" onclick="runCont(); nextProfile()">Nx</div>
-  <div class="floating-btn floating-Prev" onclick="prevProfile()">Pv</div>
-  <div class="floating-btn floating-Kill" onclick="window.location='catscript://run?file=/path/to/trial.py">KA</div>
-  
-  <div class="floating-btn" id="toggleAdvanced"
-     style="bottom:260px; right:20px; background:#000;">📸</div>
 
+  <!-- RIGHT SIDE BUTTONS
+  <div id="sideBtns">
+
+    <div id="DataBtn">
+        <div class="floating-btn floating-NxOnly" onclick="nextProfile()">=></div>
+        <div class="floating-btn floating-Next" onclick="runCont(); nextProfile()">Nx</div>
+        <div class="floating-btn floating-Prev" onclick="prevProfile()">Pv</div>
+    </div> -->
+  </div>
+</div> <!-- END OF mainRow -->
+
+
+<div id="belowWrapper">
+<div id="DataBtn1">
+        <div class="floating-btn floating-NxOnly" onclick="nextProfile()">=></div>
+        <div class="floating-btn floating-Next" onclick="runCont(); nextProfile()">Nx</div>
+        <div class="floating-btn floating-Prev" onclick="prevProfile()">Pv</div>
+    </div>
+  </div>
   <div id="advancedButtons">
-  <div class="floating-btn floating-TGP" onclick="copyText('password'); openCurrentIG()">🔑</div>
-  <div class="floating-btn floating-TGAU" onclick="copyText('newusername')">Au</div>
-  <div class="floating-btn floating-TGUN" onclick="copyText('oldusername'); openCurrentIG()">Un</div>
-  <div class="floating-btn floating-TGN" onclick="copyText('name'); openCurrentIG()">Na</div>
-  <div class="floating-btn floating-CrC" onclick="copyText('oldusername'); Createcon()">✍️</div>
+    <div class="floating-btn floating-TGP" onclick="copyText('password'); openCurrentIG()">🔑</div>
+    <div class="floating-btn floating-TGAU" onclick="copyText('newusername')">Au</div>
+    <div class="floating-btn floating-TGUN" onclick="copyText('oldusername'); openCurrentIG()">Un</div>
+    <div class="floating-btn floating-TGN" onclick="copyText('name'); openCurrentIG()">Na</div>
+    <div class="floating-btn floating-CrC" onclick="copyText('oldusername'); Createcon()">✍️</div>
   </div>
 
-<div class="floating-btn" id="toggleThreads"
-     style="bottom:260px; right:80px; background:#000;">@</div>
+  <div id="threadsButtons">
+    <div class="floating-btn floating-copyUN" onclick="copyText('oldusername'); runCreateTH()">✍️</div>
+    <div class="floating-btn floating-CopyunT" onclick="copyText('oldusername'); openCurrentTG()">Un</div>
+    <div class="floating-btn floating-Pw" onclick="copyText('password'); openCurrentTG()">🔑</div>
+  </div>
 
-	<div id="threadsButtons">
-	  <div class="floating-btn floating-copyUN" onclick="copyText('oldusername'); runCreateTH()">✍️</div>
-	  <div class="floating-btn floating-CopyunT" onclick="copyText('oldusername'); openCurrentTG()">Un</div>
-	  <div class="floating-btn floating-Pw" onclick="copyText('password'); openCurrentTG()">🔑</div>
-	</div>
-
-  
-  <div class="floating-btn" id="toggleUtility"
-     style="bottom:260px; right:140px; background:#000;">⚒️</div>
-
-  
   <div id="utilityButtons">
-  <div class="floating-btn floating-refresh" onclick="loadProfiles()">⟳</div>
-  <div class="floating-btn floating-random" onclick="randomCelebrity()">🎲</div>
-  <div class="floating-btn floating-bio" onclick="randomBio(); openCurrentIG()">🌸</div>
-  <div class="floating-btn floating-caption" onclick="randomCaption(); openCurrentIG()">📝</div>
-  <div class="floating-btn floating-first" onclick="firstProfile()">⏮</div>
-  <div class="floating-btn floating-list" onclick="showProfileList()">📂</div>
+    <div class="floating-btn floating-refresh" onclick="loadProfiles()">⟳</div>
+    <div class="floating-btn floating-random" onclick="randomCelebrity()">🎲</div>
+    <div class="floating-btn floating-bio" onclick="randomBio(); openCurrentIG()">🌸</div>
+    <div class="floating-btn floating-caption" onclick="randomCaption(); openCurrentIG()">📝</div>
+    <div class="floating-btn floating-first" onclick="firstProfile()">⏮</div>
+    <div class="floating-btn floating-list" onclick="showProfileList()">📂</div>
+  </div>
 </div>
 
-  <!-- <div class="floating-btn floating-luneza" onclick="lunezaIg2fa()">🙉</div> -->
-  
-  
-
+ 
     <!-- Modal for profile list -->
     <div id="profileModal" class="modal">
       <div class="modal-content">
@@ -277,7 +349,7 @@
 <script>
   //const API_URL = "https://script.google.com/macros/s/AKfycbxgAB9C9ETjwsUxNh1YEz13LxCE9HfxcDYOn5TbTG6R9Drk9GpULyeu2UY7Ygdcgpke1A/exec";
   //const API_URL = "https://corsproxy.io/?" + encodeURIComponent(
-  "https://script.google.com/macros/s/AKfycbxgAB9C9ETjwsUxNh1YEz13LxCE9HfxcDYOn5TbTG6R9Drk9GpULyeu2UY7Ygdcgpke1A/exec"
+  //"https://script.google.com/macros/s/AKfycbxgAB9C9ETjwsUxNh1YEz13LxCE9HfxcDYOn5TbTG6R9Drk9GpULyeu2UY7Ygdcgpke1A/exec"
 //);
 
   
@@ -331,6 +403,14 @@
         showToast("Profile has no ID");
         return;
     }
+	
+
+	/* FOR LOADING UI ALONG WITH FINALLY
+    // SHOW LOADING
+	const oldText = btn2fa.innerHTML;
+    btn2fa.disabled = true;
+    btn2fa.innerHTML = "⏳ Sending...";
+	*/
 
      // ←←← THIS IS THE NEW PROTECTION ↓↓↓
     const current2FA = (currentUser.newusername || "").toString().trim();
@@ -362,13 +442,21 @@
             secretInput.value = "";
             currentUser.newusername = newSecret;
             document.getElementById("newusername").textContent = newSecret;
+			await loadProfiles();
+			displayProfile();
+
         } else {
             showToast("Push failed: " + result.message);
         }
     } catch (err) {
         console.error(err);
         showToast("Network error");
-    }
+    } 
+	/*finally {
+        // RESTORE BUTTON
+        btn2fa.disabled = false;
+        btn2fa.innerHTML = oldText;
+    }*/
 }
   // ALL YOUR ORIGINAL FUNCTIONS — COMPLETELY PRESERVED
   function prevProfile() { if (currentIndex > 0) { currentIndex--; displayProfile(); } }
@@ -532,15 +620,6 @@
 	});
 
 
-  /*document.getElementById('copy2fa').addEventListener('click', async () => {
-    const val = document.getElementById('newusername').textContent.trim();
-    if (val) {
-      await navigator.clipboard.writeText(val);
-      document.getElementById('copy2fa').textContent = "Copied!";
-      setTimeout(() => document.getElementById('copy2fa').textContent = "Copy", 1200);
-    }
-  });
-	*/
   document.getElementById('pasteBtn').addEventListener('click', async () => {
     try {
       const text = await navigator.clipboard.readText();
@@ -549,6 +628,7 @@
     } catch (e) { alert("Paste blocked"); }
   });
   
+  /*
   // Toggle IG tools
   document.getElementById("toggleAdvanced").addEventListener("click", () => {
   const box = document.getElementById("advancedButtons");
@@ -575,6 +655,7 @@ document.getElementById("toggleUtility").addEventListener("click", () => {
   box.style.display = (box.style.display === "none") ? "block" : "none";
   showToast("Utility tools toggled");
 });
+*/
 
 //IP CHECKER
 let userIP = '';
@@ -624,6 +705,7 @@ let userIP = '';
   
     //IP Rotation link
 	function rotateIP() {
+  const btn = document.getElementById("rotateBtn");
   const url = document.getElementById("rotateLink").value.trim();
 
   if (!url) {
@@ -631,9 +713,13 @@ let userIP = '';
     return;
   }
 
-  // Trigger the IP rotation link in the background (no new tab, no redirect)
-  fetch(url)
-    .catch(err => console.error("Rotation failed:", err));
+  // Show loading state
+  const oldText = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = "⏳ Rotating...";
+
+  // Trigger the IP rotation link in the background
+  fetch(url).catch(err => console.error("Rotation failed:", err));
 
   // Fetch new IP after a delay
   setTimeout(() => {
@@ -641,11 +727,14 @@ let userIP = '';
       .then(res => res.json())
       .then(data => {
         document.getElementById("ip").textContent = data.ip;
+      })
+      .finally(() => {
+        // Restore button state
+        btn.innerHTML = oldText;
+        btn.disabled = false;
       });
   }, 3000);
 }
-
-
   // START
   loadProfiles();
 </script>
