@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"">
+  <title>TEST Viewer</title>
+  <style>
+      html, body {
+        height: 100%;
+        margin: 0;
+        overflow: hidden;
+        overscroll-behavior: none;
+      }
+      body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #fbb07c, #e98ab0, #a87fcf, #7c92e0);
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      margin: 0;
+      padding-top: 20px;
+    }
+    .container {
+      background: linear-gradient(135deg, #e0f7fa, #fff9c4);
+      border-radius: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      padding: 20px;
+      width: 100%;
+	  word-break: break-word;
+    }
+    h2 { text-align: center; margin-bottom: 20px; }
+
+    .field { margin: 8px 0; display: flex; align-items: center; }
+    .field label { font-weight: bold; margin-right: 6px; white-space: nowrap; }
+    .field span, .field input { flex: 1; font-size: 15px; }
+    .field input {
+      padding: 4px; border-radius: 6px; border: 1px solid #ccc; display: none;
+    }
+    .edit-btn { background: #ffc107; color: #000; font-size: 12px; padding: 4px 6px; margin-left: 5px; border-radius: 6px; cursor: pointer; }
+    .copy-btn { background: #28a745; color: #fff; font-size: 12px; padding: 4px 6px; margin-left: 5px; border-radius: 6px; cursor: pointer; }
+
+    .actions { margin-top: 15px; text-align: center; }
+    button {
+      margin: 5px; padding: 10px 14px; border: none; border-radius: 10px;
+      cursor: pointer; font-size: 14px; transition: 0.3s;
+    }
+    .nav-btn { background: #007bff; color: #fff; }
+    .save-btn { background: #17a2b8; color: #fff; }
+    .ig-btn { background: #e1306c; color: #fff; }
+
+    .floating-btn {
+      position: fixed; bottom: 20px; width: 50px; height: 50px;
+      display: flex; justify-content: center; align-items: center;
+      border-radius: 50%; font-size: 22px; cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3); color: white;
+    }
+    .floating-refresh { bottom: 20px; right: 20px; background: #ff4081; }
+    .floating-random { bottom: 20px; right: 80px; background: #3f51b5; }
+    .floating-bio { bottom: 20px; right: 140px; background: #9c27b0; }
+    .floating-caption { bottom: 20px; right: 200px; background: #009688; }
+    .floating-first {  bottom: 20px; right: 260px;  background: #ff9800; }
+    .floating-list { bottom: 20px; right: 320px; background: #4caf50; }
+    
+    .floating-copyUN { bottom: 80px; right: 20px; background: #4caf50; }
+    .floating-CopyunT { bottom: 80px; right: 80px; background: #ff9800; }
+    .floating-Pw { bottom: 80px; right: 140px; background: #009688; }
+
+    .floating-CrC  { bottom:140px; right:260px; background: linear-gradient(to right, #833ab4, #fd1d1d); }
+.floating-TGN  { bottom:140px; right:200px; background: linear-gradient(to right, #fd1d1d, #fcb045); }
+.floating-TGUN { bottom:140px; right:140px; background: linear-gradient(to right, #fcb045, #833ab4); }
+.floating-TGAU { bottom:140px; right:80px;  background: linear-gradient(to right, #833ab4, #fd1d1d, #fcb045); }
+.floating-TGP  { bottom:140px; right:20px;  background: linear-gradient(to right, #fd1d1d, #833ab4, #fcb045); }
+
+
+
+    .floating-NxOnly { bottom: 200px; right: 80px; background: #3f51b5; }
+    .floating-Next { bottom: 200px; right: 140px; background: #3f51b5; }
+    .floating-Prev { bottom: 200px; right: 200px; background: #3f51b5; }
+    .floating-Kill { bottom: 200px; right: 260px; background: #3f51b5; }
+
+    
+    /* Toast */
+    .toast {
+      position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%);
+      background: rgba(0,0,0,0.8); color: white; padding: 10px 16px;
+      border-radius: 8px; font-size: 14px; opacity: 0; transition: opacity 0.3s ease;
+    }
+    .toast.show { opacity: 1; }
+    
+      /* Modal styling */
+      .modal {
+        display: none; 
+        position: fixed; 
+        z-index: 999; 
+        left: 0; top: 0;
+        width: 100%; height: 100%; 
+        background-color: rgba(0,0,0,0.6);
+      }
+      .modal-content {
+        background: #fff;
+        margin: 10% auto;
+        padding: 20px;
+        border-radius: 12px;
+        width: 80%;
+        max-width: 400px;
+        max-height: 70%;
+        overflow-y: auto;
+      }
+      .modal-content h3 { margin-top: 0; }
+      .modal-content ul { list-style: none; padding: 0; }
+      .modal-content li {
+        padding: 8px; margin: 5px 0;
+        background: #f5f5f5; border-radius: 6px;
+        cursor: pointer; transition: 0.2s;
+      }
+      .modal-content li:hover { background: #e0e0e0; }
+      .close {
+        float: right; font-size: 22px;
+        cursor: pointer; font-weight: bold;
+      }
+    /* Twofactor */
+      .row {
+      margin: 12px 0;
+    }
+    .code-box {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      margin-top: 15px;
+    }
+    .code {
+      font-size: 36px;
+      font-weight: bold;
+      letter-spacing: 4px;
+    }
+    .small {
+      font-size: 12px;
+      color: #666;
+      margin-top: 5px;
+    }
+	
+	#newusername {
+  cursor: pointer;
+  padding: 3px 4px;
+  border-radius: 6px;
+}
+
+#newusername:hover {
+  background: #f1f1f1;
+}
+
+#threadsButtons, #utilityButtons, #advancedButtons {
+  display: none;
+}
+
+    #ipContainer {
+      font-size: 18px;
+      margin-bottom: 5px;
+	  display: flex;           /* enables flex layout */
+  flex-direction: column;  /* stack items vertically */
+  align-items: center;     /* horizontal centering */
+  justify-content: center;
+    }
+	
+	
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h3>Jayne Profile</h3>
+
+    <div class="field"><label>Name:</label><span id="name"></span>
+    </div>
+    <div class="field"><label>Username:</label><span id="oldusername"></span>
+    <input id="oldusernameInput">
+    </div>
+    <div class="field">
+  <label>Authenticator:</label>
+  <span id="newusername" class="copyable"></span>
+  <input id="newusernameInput">
+</div>
+
+    <div class="field"><label>Password:</label><span id="password"></span>
+    </div>
+
+     
+    <!-- Twofac -->
+  <div class="row" style="display:flex; gap:10px; align-items:center;">
+    <input id="secret" placeholder="Enter Base32 Secret (e.g. JBSW...)" style="flex:1;" />
+    <button onclick="send2FAToSheet()" style="padding:6px 12px;">Send 2FA</button>
+	
+  </div>
+  
+  <div class="small">Next update in <span id="countdown">—</span>s</div>
+
+  <div class="code-box">
+    <button id="pasteBtn">Paste</button>
+    <div id="totp" class="code">------</div>
+    <button id="copyBtn">Copy</button>
+  </div>
+  
+  <!-- IP Checker -->
+  <div style="display:flex; gap:10px; align-items:center; justify-content:center; margin-top:10px;">
+  <input id="rotateLink" placeholder="Enter Rotate IP URL" style="flex:1; padding:6px 10px;" />
+  <button id="rotateBtn" onclick="rotateIP()" style="padding:6px 12px;">Rotate IP</button>
+</div>
+
+   
+   <div id="ipContainer">
+  <div id="ip">Loading...</div>
+  <button id="refreshBtn" onclick="refreshAndOpen()">🔄 Refresh IP + Check</button>
+</div>
+
+  </div>
+  
+  
+	
+	
+  <!-- Floating buttons -->
+  <div class="floating-btn floating-NxOnly" onclick="nextProfile()">=></div>
+  <div class="floating-btn floating-Next" onclick="runCont(); nextProfile()">Nx</div>
+  <div class="floating-btn floating-Prev" onclick="prevProfile()">Pv</div>
+  <div class="floating-btn floating-Kill" onclick="window.location='catscript://run?file=/path/to/trial.py">KA</div>
+  
+  <div class="floating-btn" id="toggleAdvanced"
+     style="bottom:260px; right:20px; background:#000;">📸</div>
+
+  <div id="advancedButtons">
+  <div class="floating-btn floating-TGP" onclick="copyText('password'); openCurrentIG()">🔑</div>
+  <div class="floating-btn floating-TGAU" onclick="copyText('newusername')">Au</div>
+  <div class="floating-btn floating-TGUN" onclick="copyText('oldusername'); openCurrentIG()">Un</div>
+  <div class="floating-btn floating-TGN" onclick="copyText('name'); openCurrentIG()">Na</div>
+  <div class="floating-btn floating-CrC" onclick="copyText('oldusername'); Createcon()">✍️</div>
+  </div>
+
+<div class="floating-btn" id="toggleThreads"
+     style="bottom:260px; right:80px; background:#000;">@</div>
+
+	<div id="threadsButtons">
+	  <div class="floating-btn floating-copyUN" onclick="copyText('oldusername'); runCreateTH()">✍️</div>
+	  <div class="floating-btn floating-CopyunT" onclick="copyText('oldusername'); openCurrentTG()">Un</div>
+	  <div class="floating-btn floating-Pw" onclick="copyText('password'); openCurrentTG()">🔑</div>
+	</div>
+
+  
+  <div class="floating-btn" id="toggleUtility"
+     style="bottom:260px; right:140px; background:#000;">⚒️</div>
+
+  
+  <div id="utilityButtons">
+  <div class="floating-btn floating-refresh" onclick="loadProfiles()">⟳</div>
+  <div class="floating-btn floating-random" onclick="randomCelebrity()">🎲</div>
+  <div class="floating-btn floating-bio" onclick="randomBio(); openCurrentIG()">🌸</div>
+  <div class="floating-btn floating-caption" onclick="randomCaption(); openCurrentIG()">📝</div>
+  <div class="floating-btn floating-first" onclick="firstProfile()">⏮</div>
+  <div class="floating-btn floating-list" onclick="showProfileList()">📂</div>
+</div>
+
+  <!-- <div class="floating-btn floating-luneza" onclick="lunezaIg2fa()">🙉</div> -->
+  
+  
+
+    <!-- Modal for profile list -->
+    <div id="profileModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h3>Select a Profile</h3>
+        <ul id="profileList"></ul>
+      </div>
+    </div>
+
+  <div id="toast" class="toast"></div>
+
+<script>
+  //const API_URL = "https://script.google.com/macros/s/AKfycbxgAB9C9ETjwsUxNh1YEz13LxCE9HfxcDYOn5TbTG6R9Drk9GpULyeu2UY7Ygdcgpke1A/exec";
+  //const API_URL = "https://corsproxy.io/?" + encodeURIComponent(
+  "https://script.google.com/macros/s/AKfycbxgAB9C9ETjwsUxNh1YEz13LxCE9HfxcDYOn5TbTG6R9Drk9GpULyeu2UY7Ygdcgpke1A/exec"
+//);
+
+  
+  let profiles = [], currentIndex = 0;
+  
+  async function loadProfiles() {
+  try {
+    const realAPI = "https://script.google.com/macros/s/AKfycbyfgcchDH1X4gyP0AWFGF57_D2Be8IjnmOebtdae8uSzJycfX_ubWSLWnHbT35Hm8wIAg/exec";
+    const API_URL = realAPI;  // ← DIRECT, NO PROXY
+    const res = await fetch(API_URL);
+    profiles = await res.json();
+    currentIndex = parseInt(localStorage.getItem("currentIndex") || "0");
+    if (currentIndex >= profiles.length) currentIndex = 0;
+    displayProfile();
+  } catch (err) {
+    console.error("Load error details:", err);
+    showToast("Load failed – check console");
+  }
+}
+
+  function displayProfile() {
+    if (!profiles.length) return;
+    const p = profiles[currentIndex];
+
+    document.getElementById("name").textContent = p.name;
+    document.getElementById("oldusername").textContent = p.oldusername;
+    document.getElementById("newusername").textContent = p.newusername;
+    document.getElementById("password").textContent = p.password;
+
+    // AUTO-FILL 2FA SECRET FROM "New Username" column
+    const secretInput = document.getElementById("secret");
+    secretInput.value = p.newusername?.trim() || "";
+
+    update(); // Refresh TOTP instantly
+
+    localStorage.setItem("currentIndex", currentIndex);
+  }
+
+  // WORKING "SEND 2FA" BUTTON — UPDATES EXACT SAME ROW USING YOUR EXISTING doPost
+
+	async function send2FAToSheet() {
+    const secretInput = document.getElementById("secret");
+    const newSecret = secretInput.value.trim();
+    if (!newSecret) {
+        showToast("No 2FA secret entered");
+        return;
+    }
+
+    const currentUser = profiles[currentIndex];
+    if (!currentUser || !currentUser.id) {
+        showToast("Profile has no ID");
+        return;
+    }
+
+     // ←←← THIS IS THE NEW PROTECTION ↓↓↓
+    const current2FA = (currentUser.newusername || "").toString().trim();
+    if (current2FA && !confirm("2FA already exists! Overwrite it?")) {
+    showToast("Send cancelled");
+    secretInput.select();  // optional: re-selects the text
+    return;
+	}
+    // ←←← END OF PROTECTION
+
+    const payload = {
+        id: currentUser.id,
+        newusername: newSecret
+    };
+
+    const realAPI = "https://script.google.com/macros/s/AKfycbyfgcchDH1X4gyP0AWFGF57_D2Be8IjnmOebtdae8uSzJycfX_ubWSLWnHbT35Hm8wIAg/exec";
+
+    try {
+        const response = await fetch(realAPI, {
+            method: "POST",
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
+            body: JSON.stringify(payload)
+        });
+        const result = await response.json();
+        console.log("Response:", result);
+
+        if (result.success) {
+            showToast("2FA sent to sheet!");
+            secretInput.value = "";
+            currentUser.newusername = newSecret;
+            document.getElementById("newusername").textContent = newSecret;
+        } else {
+            showToast("Push failed: " + result.message);
+        }
+    } catch (err) {
+        console.error(err);
+        showToast("Network error");
+    }
+}
+  // ALL YOUR ORIGINAL FUNCTIONS — COMPLETELY PRESERVED
+  function prevProfile() { if (currentIndex > 0) { currentIndex--; displayProfile(); } }
+  function nextProfile() { if (currentIndex < profiles.length - 1) { currentIndex++; displayProfile(); } }
+  function firstProfile() { currentIndex = 0; displayProfile(); showToast("First profile"); }
+
+  function Createcon() { 
+  copyText('newusername');
+  window.location.href = "shortcuts://run-shortcut?name=CreateIGCon"; 
+  }
+  
+  function runCreateTH() { 
+  window.location.href = "shortcuts://run-shortcut?name=CreateTh"; 
+  }
+  
+  function runCont() { 
+  window.location.href = "shortcuts://run-shortcut?name=NextIGTH"; 
+  }
+
+  function openCurrentIG() { 
+  window.open("https://instagram.com/", "_blank"); 
+  }
+  
+  function openCurrentTG() { 
+  window.open("https://threads.net/", "_blank"); 
+  }
+
+  function copyText(field) {
+    const text = document.getElementById(field).textContent.trim();
+    if (text) {
+      navigator.clipboard.writeText(text);
+      showToast(field + " copied!");
+    }
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById("toast");
+    t.textContent = msg;
+    t.classList.add("show");
+    setTimeout(() => t.classList.remove("show"), 1800);
+  }
+
+  // Random celebrity, bio, caption — unchanged
+  const celebrities = ["Selena Gomez","Kylie Jenner","Dwayne Johnson","Ariana Grande","Kim Kardashian","Beyoncé","Taylor Swift","Jennifer Lopez","Nicki Minaj","Miley Cyrus","Katy Perry","Zendaya","Cardi B","Billie Eilish","Olivia Rodrigo","Doja Cat","Lil Nas X","Travis Scott","Post Malone","Rihanna","Justin Bieber","Drake","Lana Del Rey","Halsey","Harry Styles","Dua Lipa","Bad Bunny","Shakira"];
+  function randomCelebrity() {
+    const rand = celebrities[Math.floor(Math.random() * celebrities.length)];
+    navigator.clipboard.writeText(rand);
+    window.open("https://www.instagram.com/explore/search/keyword/?q=" + encodeURIComponent(rand), "_blank");
+    showToast("Searching: " + rand);
+  }
+
+  function randomBio() {
+    const e = ["Pink Heart","Sparkles","Cherry Blossom","Butterfly","Purple Heart","Crown","Gem Stone"];
+    const bio = `18 ${e[Math.floor(Math.random()*e.length)]}\nSingle ${e[Math.floor(Math.random()*e.length)]}`;
+    navigator.clipboard.writeText(bio);
+    showToast("Bio copied!");
+  }
+
+  function randomCaption() {
+    const c = ["no reason, just liked these","this light felt kinda nice","felt cute, might delete later","vibes","golden hour","soft girl era","main character energy","just a girl","healing era","doing it for me"];
+    const cap = c[Math.floor(Math.random()*c.length)];
+    navigator.clipboard.writeText(cap);
+    showToast("Caption copied!");
+  }
+
+  // Profile list modal
+  function showProfileList() {
+    const modal = document.getElementById("profileModal");
+    const list = document.getElementById("profileList");
+    list.innerHTML = "";
+    profiles.forEach((p, i) => {
+      const li = document.createElement("li");
+      li.textContent = p.name || p.oldusername || "Profile " + (i+1);
+      li.onclick = () => { currentIndex = i; displayProfile(); closeModal(); };
+      list.appendChild(li);
+    });
+    modal.style.display = "block";
+  }
+  function closeModal() { document.getElementById("profileModal").style.display = "none"; }
+  window.onclick = e => { if (e.target === document.getElementById("profileModal")) closeModal(); };
+
+  function lunezaIg2fa() { window.location.href = "luneza2fa.html"; }
+
+  // FULL TOTP CODE (unchanged)
+  function base32toBytes(base32) {
+    base32 = (base32 || '').replace(/=+$/,'').replace(/[^A-Z2-7]/gi,'').toUpperCase();
+    const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+    let bits = 0, value = 0, bytes = [];
+    for (let i = 0; i < base32.length; i++) {
+      const idx = alphabet.indexOf(base32[i]);
+      if (idx === -1) continue;
+      value = (value << 5) | idx;
+      bits += 5;
+      if (bits >= 8) {
+        bits -= 8;
+        bytes.push((value >> bits) & 0xFF);
+      }
+    }
+    return new Uint8Array(bytes);
+  }
+  function counterToBuffer(counter) {
+    const buf = new ArrayBuffer(8);
+    const view = new DataView(buf);
+    view.setUint32(0, Math.floor(counter / 2**32));
+    view.setUint32(4, counter >>> 0);
+    return buf;
+  }
+  async function hmacSha1(keyBytes, counterBuf) {
+    const cryptoKey = await crypto.subtle.importKey('raw', keyBytes, { name: 'HMAC', hash: 'SHA-1' }, false, ['sign']);
+    const sig = await crypto.subtle.sign('HMAC', cryptoKey, counterBuf);
+    return new Uint8Array(sig);
+  }
+  function truncate(hmacBytes, digits) {
+    const offset = hmacBytes[hmacBytes.length - 1] & 0x0f;
+    const code = ((hmacBytes[offset] & 0x7f) << 24) |
+                 ((hmacBytes[offset+1] & 0xff) << 16) |
+                 ((hmacBytes[offset+2] & 0xff) << 8) |
+                 (hmacBytes[offset+3] & 0xff);
+    return (code % 10**digits).toString().padStart(digits, '0');
+  }
+  async function generateTOTP(secret) {
+    const keyBytes = base32toBytes(secret);
+    if (keyBytes.length === 0) return null;
+    const counter = Math.floor(Date.now() / 1000 / 30);
+    const hmac = await hmacSha1(keyBytes, counterToBuffer(counter));
+    return truncate(hmac, 6);
+  }
+
+  const secretEl = document.getElementById('secret');
+  const codeEl = document.getElementById('totp');
+  const countdownEl = document.getElementById('countdown');
+
+  async function update() {
+    const secret = secretEl.value.trim();
+    const remaining = 30 - (Math.floor(Date.now() / 1000) % 30);
+    countdownEl.textContent = remaining;
+    if (!secret) { codeEl.textContent = "------"; return; }
+    const code = await generateTOTP(secret);
+    codeEl.textContent = code || "invalid";
+  }
+  setInterval(update, 1000);
+  update();
+
+  document.getElementById('copyBtn').addEventListener('click', async () => {
+    const code = codeEl.textContent.trim();
+    if (code && code !== "------" && code !== "invalid") {
+      await navigator.clipboard.writeText(code);
+      document.getElementById('copyBtn').textContent = "Copied!";
+      setTimeout(() => document.getElementById('copyBtn').textContent = "Copy", 1200);
+    }
+  });
+  
+  /*Click to copy 2fa */
+  
+	document.getElementById("newusername").addEventListener("click", async () => {
+	const val = document.getElementById("newusername").textContent.trim();
+	if (val) {
+	  await navigator.clipboard.writeText(val);
+	  showToast("2FA copied!");
+	  }
+	});
+
+
+  /*document.getElementById('copy2fa').addEventListener('click', async () => {
+    const val = document.getElementById('newusername').textContent.trim();
+    if (val) {
+      await navigator.clipboard.writeText(val);
+      document.getElementById('copy2fa').textContent = "Copied!";
+      setTimeout(() => document.getElementById('copy2fa').textContent = "Copy", 1200);
+    }
+  });
+	*/
+  document.getElementById('pasteBtn').addEventListener('click', async () => {
+    try {
+      const text = await navigator.clipboard.readText();
+      secretEl.value = text.trim();
+      update();
+    } catch (e) { alert("Paste blocked"); }
+  });
+  
+  // Toggle IG tools
+  document.getElementById("toggleAdvanced").addEventListener("click", () => {
+  const box = document.getElementById("advancedButtons");
+
+  if (box.style.display === "none") {
+    box.style.display = "block";
+    showToast("IG tools toggled");
+  } else {
+    box.style.display = "none";
+    showToast("IG tools toggled");
+  }
+});
+
+// Toggle Threads tools
+document.getElementById("toggleThreads").addEventListener("click", () => {
+  const box = document.getElementById("threadsButtons");
+  box.style.display = (box.style.display === "none") ? "block" : "none";
+  showToast("Threads tools toggled");
+});
+
+// Toggle Utility tools
+document.getElementById("toggleUtility").addEventListener("click", () => {
+  const box = document.getElementById("utilityButtons");
+  box.style.display = (box.style.display === "none") ? "block" : "none";
+  showToast("Utility tools toggled");
+});
+
+//IP CHECKER
+let userIP = '';
+    let scamalyticsWindow = null;
+
+    // Get IP on page load
+    fetch('https://api.ipify.org?format=json')
+      .then(res => res.json())
+      .then(data => {
+        userIP = data.ip;
+        document.getElementById("ip").textContent = userIP;
+      })
+      .catch(() => {
+        document.getElementById("ip").textContent = "Failed to load IP.";
+      });
+
+    function refreshAndOpen() {
+      const btn = document.getElementById("refreshBtn");
+
+      // Start loading
+      btn.disabled = true;
+      const oldText = btn.innerHTML;
+      btn.innerHTML = "⏳ Loading...";
+
+      // Open a blank tab immediately
+      if (!scamalyticsWindow || scamalyticsWindow.closed) {
+        scamalyticsWindow = window.open('about:blank', '_blank');
+      }
+
+      // Fetch new IP and update
+      fetch('https://api.ipify.org?format=json')
+        .then(res => res.json())
+        .then(data => {
+          userIP = data.ip;
+          document.getElementById("ip").textContent = userIP;
+
+          const url = `https://scamalytics.com/ip/${userIP}`;
+          scamalyticsWindow.location.href = url;
+          scamalyticsWindow.focus();
+        })
+        .finally(() => {
+          // End loading
+          btn.innerHTML = oldText;
+          btn.disabled = false;
+        });
+    }
+  
+    //IP Rotation link
+	function rotateIP() {
+  const url = document.getElementById("rotateLink").value.trim();
+
+  if (!url) {
+    showToast("Please enter a valid link.");
+    return;
+  }
+
+  // Trigger the IP rotation link in the background (no new tab, no redirect)
+  fetch(url)
+    .catch(err => console.error("Rotation failed:", err));
+
+  // Fetch new IP after a delay
+  setTimeout(() => {
+    fetch('https://api.ipify.org?format=json')
+      .then(res => res.json())
+      .then(data => {
+        document.getElementById("ip").textContent = data.ip;
+      });
+  }, 3000);
+}
+
+
+  // START
+  loadProfiles();
+</script>
+
+</body>
+</html>
