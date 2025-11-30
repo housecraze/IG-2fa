@@ -2,245 +2,324 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <title>TEST Viewer</title>
   <style>
-      html, body {
-        height: 100%;
-        margin: 0;
-        overflow: auto;
-        overscroll-behavior: none;
-      }
-      body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #fbb07c, #e98ab0, #a87fcf, #7c92e0);
-      display: block;
-      justify-content: center;
-      align-items: flex-start;
-      min-height: 100vh;
-      margin: 0;
-      padding-top: 20px;
-	 
-    }
-    .container {
-      background: linear-gradient(135deg, #e0f7fa, #fff9c4);
-      border-radius: 20px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-      padding: 20px;
-      width: 100%;
-	  word-break: break-word;
-    }
-    h2 { text-align: center; margin-bottom: 20px; }
+  html, body {
+    height: 100%;
+    margin: 0;
+    overflow: auto;
+    overscroll-behavior: none;
+  }
 
-    .field { margin: 8px 0; display: flex; align-items: center; }
-    .field label { font-weight: bold; margin-right: 6px; white-space: nowrap; }
-    .field span, .field input { flex: 1; font-size: 15px; }
-    .field input {
-      padding: 4px; border-radius: 6px; border: 1px solid #ccc; display: none;
-    }
-    .edit-btn { background: #ffc107; color: #000; font-size: 12px; padding: 4px 6px; margin-left: 5px; border-radius: 6px; cursor: pointer; }
-    .copy-btn { background: #28a745; color: #fff; font-size: 12px; padding: 4px 6px; margin-left: 5px; border-radius: 6px; cursor: pointer; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(135deg, #fbb07c, #e98ab0, #a87fcf, #7c92e0);
+    min-height: 100vh;
+    padding: 12px;
+    box-sizing: border-box;
+  }
 
-    .actions { margin-top: 15px; text-align: center; }
-    button {
-      margin: 5px; padding: 10px 14px; border: none; border-radius: 10px;
-      cursor: pointer; font-size: 14px; transition: 0.3s;
-    }
-    .nav-btn { background: #007bff; color: #fff; }
-    .save-btn { background: #17a2b8; color: #fff; }
-    .ig-btn { background: #e1306c; color: #fff; }
-	
-	
-/* main row: container + side buttons */
-#mainRow {
+  .container {
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+    padding: 16px;
+    max-width: 420px;
+    margin: 0 auto;
+    word-break: break-word;
+  }
+
+  h2 {
+    text-align: center;
+    margin: 0 0 16px;
+    font-size: 1.4em;
+    color: #333;
+  }
+
+  .field {
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+    font-size: 0.95em;
+  }
+
+  .field label {
+    font-weight: 600;
+    margin-right: 8px;
+    white-space: nowrap;
+    color: #444;
+  }
+
+  .field span, .field input {
+    flex: 1;
+    font-size: 0.95em;
+  }
+
+  .field input {
+    padding: 6px 8px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    background: #fff;
+    display: none;
+  }
+
+  .edit-btn, .copy-btn {
+    font-size: 11px;
+    padding: 4px 8px;
+    margin-left: 6px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  .edit-btn { background: #ffd93d; color: #000; }
+  .copy-btn { background: #6bcf7f; color: #fff; }
+
+  button, .floating-btn {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 12px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  }
+
+  button:hover, .floating-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  }
+
+  /* Layout */
+  
+/* ───── YOUR ORIGINAL STYLE – BACK TO PERFECT ───── */
+#belowWrapper {
+  width: 100%;
   display: flex;
-  gap: 20px; /* space between container and side buttons */
-  align-items: flex-start;
+  margin-top: 5px;
 }
-
-/* side buttons: stick next to container */
-#sideBtns {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
 
 #advancedButtons,
 #threadsButtons,
 #DataBtn1,
 #utilityButtons {
   display: flex;
-  flex-wrap: nowrap;        /* prevent stacking */
-  justify-content: flex-end; /* align buttons to the right */
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 10px;
-  margin-top: 15px;
-  width: 100%;       /* full width so justify-content works */
-  padding-right: 10px;
-}
-
-
-#belowWrapper {
+  margin-top: 5px;
   width: 100%;
-  display: block;
-  margin-top: 20px;
-  
+  justify-content: flex-end !important;   /* ← makes buttons hug the right */
 }
 
+.util-name {
+  text-align: right;
+  font-weight: bold;
+  font-size: 8px;
+  color: #333;
+  margin: 5px 0 8px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+
+}
+
+
+
+/* Buttons exactly like before – nice and compact */
 .floating-btn {
   padding: 10px 14px;
-  border-radius: 10px;
+  border-radius: 12px;
   font-size: 14px;
   color: white;
   cursor: pointer;
   transition: 0.3s;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+  min-width: 15px;
+  height: 15px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
+  /* Navigation */
+  .floating-Next, .floating-Prev, .floating-NxOnly { background: #000000; }
 
-.floating-NxOnly:hover, .floating-Next:hover, .floating-Prev:hover {
-  opacity: 0.85;
-  transform: scale(1.05);
-}
+  /* Utility */
+  .floating-refresh { background: #ff4081; }
+  .floating-random { background: #3949ab; }
+  .floating-bio { background: #8e24aa; }
+  .floating-caption { background: #00897b; }
+  .floating-first { background: #ff8f00; }
+  .floating-list { background: #43a047; }
 
-/* Navigation Buttons */
-.floating-NxOnly, .floating-Next, .floating-Prev {
-  background: #3f51b5;
-  color: white;
-  padding: 10px 14px;
-  border-radius: 10px;
-  font-size: 14px;
-  cursor: pointer;
-  display: flex;
+  /* Threads */
+  .floating-copyUN { background: #4caf50; }
+  .floating-CopyunT { background: #ff9800; }
+  .floating-Pw { background: #00acc1; }
+
+  /* Advanced – softer gradients */
+  .floating-CrC { background: linear-gradient(135deg, #8e24aa, #e91e63); }
+  .floating-TGN { background: linear-gradient(135deg, #f44336, #ffb300); }
+  .floating-TGUN { background: linear-gradient(135deg, #ffb300, #6a1b9a); }
+  .floating-TGAU { background: linear-gradient(135deg, #8e24aa, #e91e63, #ffb300); }
+  .floating-TGP { background: linear-gradient(135deg, #e91e63, #6a1b9a, #ffb300); }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.85);
+    color: white;
+    padding: 10px 18px;
+    border-radius: 12px;
+    font-size: 13px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: 10000;
+  }
+  .toast.show { opacity: 1; }
+
+  /* Modal */
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 10001;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(4px);
+  }
+  .modal-content {
+    background: white;
+    margin: 15% auto;
+    padding: 20px;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 380px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+  }
+  .modal-content li {
+    padding: 10px;
+    margin: 6px 0;
+    background: #f8f9fa;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .modal-content li:hover { background: #e9ecef; }
+
+  /* ───── Ultra-compact 2FA + countdown + IP (details take almost no space) ───── */
+.code-box {
+  display: flex !important;
   justify-content: center;
-  align-items: center;
-  transition: 0.3s;
+  gap: 8px;
+  margin: 12px 0 4px;
+  flex-wrap: nowrap !important;
+  overflow-x: auto;
+  padding: 2px 0;
+}
+.code {
+  font-size: 28px !important;   /* smaller but still very readable */
+  font-weight: bold;
+  letter-spacing: 4px;
+  min-width: 28px;
 }
 
-/* Utility Buttons */
-.floating-refresh  { background: #ff4081; }
-.floating-random   { background: #3f51b5; }
-.floating-bio      { background: #9c27b0; }
-.floating-caption  { background: #009688; }
-.floating-first    { background: #ff9800; }
-.floating-list     { background: #4caf50; }
-
-/* Threads Buttons */
-.floating-copyUN   { background: #4caf50; }
-.floating-CopyunT  { background: #ff9800; }
-.floating-Pw       { background: #009688; }
-
-/* Advanced Buttons */
-.floating-CrC      { background: linear-gradient(to right, #833ab4, #fd1d1d); }
-.floating-TGN      { background: linear-gradient(to right, #fd1d1d, #fcb045); }
-.floating-TGUN     { background: linear-gradient(to right, #fcb045, #833ab4); }
-.floating-TGAU     { background: linear-gradient(to right, #833ab4, #fd1d1d, #fcb045); }
-.floating-TGP      { background: linear-gradient(to right, #fd1d1d, #833ab4, #fcb045); }
-
-/* Optional: hover effect for nicer interaction */
-.floating-btn:hover {
-  opacity: 0.85;
-  transform: scale(1.05);
+/* Countdown – tiny and subtle */
+.code-box + .small,
+.row + .small {
+  text-align: center;
+  font-size: 11.5px !important;
+  color: #888 !important;
+  margin: 0 0 10px;
 }
+#countdown { font-weight: 600; color: #555; }
 
-
-/* Twofactor */
-      .row {
-      margin: 12px 0;
-    }
-    .code-box {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 10px;
-      margin-top: 15px;
-    }
-    .code {
-      font-size: 36px;
-      font-weight: bold;
-      letter-spacing: 4px;
-    }
-    .small {
-      font-size: 12px;
-      color: #666;
-      margin-top: 5px;
-    }
-	#ipContainer {
-      font-size: 18px;
-      margin-bottom: 5px;
-	  display: flex;           /* enables flex layout */
-  flex-direction: column;  /* stack items vertically */
-  align-items: center;     /* horizontal centering */
-  justify-content: center;
-    }
-
-    
-    /* Toast */
-    .toast {
-  position: fixed;
-  bottom: 90px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(0,0,0,0.8);
-  color: white;
-  padding: 10px 16px;
+/* ───── Tiniest IP container ever – saves max space ───── */
+#ipContainer {
+  background: #1a1a1a;
+  color: #0f9;
+  padding: 5px 10px !important;   /* super tight */
   border-radius: 8px;
-  font-size: 14px;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  z-index: 10000; /* higher than floating buttons */
+  text-align: center;
+  font-family: 'SF Mono', Menlo, monospace;
+  font-size: 11px !important;     /* tiny text */
+  max-width: 240px;
+  margin: 3px auto !important;    /* less margin */
+  line-height: 1.3;
+  border: 1px solid #333;
+  opacity: 0.9;
+
+  /* Side-by-side magic */
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
 }
 
-    .toast.show { opacity: 1; }
-    
-      /* Modal styling */
-      .modal {
-        display: none; 
-        position: fixed; 
-        z-index: 10001; 
-        left: 0; top: 0;
-        width: 100%; height: 100%; 
-        background-color: rgba(0,0,0,0.6);
-      }
-      .modal-content {
-        background: #fff;
-        margin: 10% auto;
-        padding: 20px;
-        border-radius: 12px;
-        width: 80%;
-        max-width: 400px;
-        max-height: 70%;
-        overflow-y: auto;
-      }
-      .modal-content h3 { margin-top: 0; }
-      .modal-content ul { list-style: none; padding: 0; }
-      .modal-content li {
-        padding: 8px; margin: 5px 0;
-        background: #f5f5f5; border-radius: 6px;
-        cursor: pointer; transition: 0.2s;
-      }
-      .modal-content li:hover { background: #e0e0e0; }
-      .close {
-        float: right; font-size: 22px;
-        cursor: pointer; font-weight: bold;
-      }
-    
-	
-	#newusername {
+#ipContainer > * {                 /* makes labels + IPs behave */
+  margin: 0;
+  min-width: 90px;
+}
+
+#ipContainer .ip-label {
+  font-size: 8.5px !important;
+  color: #0af;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 2px;
+  opacity: 0.9;
+}
+
+#ipContainer #ip,
+#ipContainer #oldIP {
+  font-size: 11.8px !important;
+  font-weight: bold;
+  color: #FFFFFF;
+  letter-spacing: 0.6px;
+}
+
+/* Tiny refresh button */
+#refreshBtn {
+  margin: 5px auto 0 !important;
+  padding: 4px 4px !important;
+  font-size: 9.5px !important;
+  background: #333;
+  border-radius: 7px;
+  display: block;
+  width: fit-content;
+}
+
+#profileList {
+  list-style: none;
+  padding: 0;
+  margin: 8px 0;
+}
+
+#profileList li {
+  padding: 11px 14px;
+  margin: 4px 8px;
+  background: rgba(255,255,255,0.9);
+  border-radius: 10px;
   cursor: pointer;
-  padding: 3px 4px;
-  border-radius: 6px;
+  transition: all 0.2s;
+  font-size: 14px;
+  text-align: left;
 }
 
-#newusername:hover {
-  background: #f1f1f1;
+#profileList li:hover {
+  background: #e3f2fd;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
-
-
-}
-  </style>
+</style>
 </head>
 <body>
 <!-- MAIN ROW: container + side buttons -->
@@ -248,7 +327,7 @@
   <div class="container">
     <h3>Jayne Profile</h3>
 
-    <div class="field"><label>Name:</label><span id="name"></span>
+    <div class="field"><label>Container #:</label><span id="name"></span>
     </div>
     <div class="field"><label>Username:</label><span id="oldusername"></span>
     <input id="oldusernameInput">
@@ -280,15 +359,21 @@
   
   <!-- IP Checker -->
   <div style="display:flex; gap:10px; align-items:center; justify-content:center; margin-top:10px;">
-  <input id="rotateLink" placeholder="Enter Rotate IP URL" style="flex:1; padding:6px 10px;" />
+  <input id="rotateLink" placeholder="Enter Rotate IP URL" style="flex:1; padding:1px 2px;" />
   <button id="rotateBtn" onclick="rotateIP()" style="padding:6px 12px;">Rotate IP</button>
 </div>
 
    
-   <div id="ipContainer">
+	<div id="ipContainer">
+  <div class="ip-label">Old IP:</div>
+  <div id="oldIP">No previous IP</div>
+
+  <div class="ip-label">Current IP:</div>
   <div id="ip">Loading...</div>
-  <button id="refreshBtn" onclick="refreshAndOpen()">🔄 Refresh IP + Check</button>
+
+  <button id="refreshBtn" onclick="refreshAndOpen()">🔄 Refresh IP + Check Scamlytics</button>
 </div>
+	
   </div>
 
   <!-- RIGHT SIDE BUTTONS
@@ -302,36 +387,45 @@
   </div>
 </div> <!-- END OF mainRow -->
 
-
-<div id="belowWrapper">
-<div id="DataBtn1">
-        <div class="floating-btn floating-NxOnly" onclick="nextProfile()">=></div>
-        <div class="floating-btn floating-Next" onclick="runCont(); nextProfile()">Nx</div>
-        <div class="floating-btn floating-Prev" onclick="prevProfile()">Pv</div>
+<div class="util-name">Container Navigation
+  <div id="belowWrapper">
+  <div id="DataBtn1">
+          <div class="floating-btn floating-NxOnly" onclick="nextProfile()">=></div>
+          <div class="floating-btn floating-Next" onclick="runCont(); nextProfile()">Nx</div>
+          <div class="floating-btn floating-Prev" onclick="prevProfile()">Pv</div>
+      </div>
     </div>
   </div>
-  <div id="advancedButtons">
-    <div class="floating-btn floating-TGP" onclick="copyText('password'); openCurrentIG()">🔑</div>
-    <div class="floating-btn floating-TGAU" onclick="copyText('newusername')">Au</div>
-    <div class="floating-btn floating-TGUN" onclick="copyText('oldusername'); openCurrentIG()">Un</div>
-    <div class="floating-btn floating-TGN" onclick="copyText('name'); openCurrentIG()">Na</div>
-    <div class="floating-btn floating-CrC" onclick="copyText('oldusername'); Createcon()">✍️</div>
+
+  <div class="util-name">IG Login
+    <div id="advancedButtons">
+      <div class="floating-btn floating-TGP" onclick="copyText('password'); openCurrentIG()">🔑</div>
+      <div class="floating-btn floating-TGAU" onclick="copyText('newusername')">Au</div>
+      <div class="floating-btn floating-TGUN" onclick="copyText('oldusername'); openCurrentIG()">Un</div>
+      <div class="floating-btn floating-TGN" onclick="copyText('name'); openCurrentIG()">Na</div>
+      <div class="floating-btn floating-CrC" onclick="copyText('oldusername'); Createcon()">✍️</div>
+    </div>
   </div>
 
-  <div id="threadsButtons">
-    <div class="floating-btn floating-copyUN" onclick="copyText('oldusername'); runCreateTH()">✍️</div>
-    <div class="floating-btn floating-CopyunT" onclick="copyText('oldusername'); openCurrentTG()">Un</div>
-    <div class="floating-btn floating-Pw" onclick="copyText('password'); openCurrentTG()">🔑</div>
+  <div class="util-name">Threads Login
+    <div id="threadsButtons">
+      <div class="floating-btn floating-copyUN" onclick="copyText('oldusername'); runCreateTH()">✍️</div>
+      <div class="floating-btn floating-CopyunT" onclick="copyText('oldusername'); openCurrentTG()">Un</div>
+      <div class="floating-btn floating-Pw" onclick="copyText('password'); openCurrentTG()">🔑</div>
+    </div>
   </div>
 
-  <div id="utilityButtons">
-    <div class="floating-btn floating-refresh" onclick="loadProfiles()">⟳</div>
-    <div class="floating-btn floating-random" onclick="randomCelebrity()">🎲</div>
-    <div class="floating-btn floating-bio" onclick="randomBio(); openCurrentIG()">🌸</div>
-    <div class="floating-btn floating-caption" onclick="randomCaption(); openCurrentIG()">📝</div>
-    <div class="floating-btn floating-first" onclick="firstProfile()">⏮</div>
-    <div class="floating-btn floating-list" onclick="showProfileList()">📂</div>
+  <div class="util-name">For Ig
+    <div id="utilityButtons">
+      <div class="floating-btn floating-refresh" onclick="loadProfiles()">⟳</div>
+      <div class="floating-btn floating-random" onclick="randomCelebrity()">🎲</div>
+      <div class="floating-btn floating-bio" onclick="randomBio(); openCurrentIG()">🌸</div>
+      <div class="floating-btn floating-caption" onclick="randomCaption(); openCurrentIG()">📝</div>
+      <div class="floating-btn floating-first" onclick="firstProfile()">⏮</div>
+      <div class="floating-btn floating-list" onclick="showProfileList()">📂</div>
+    </div>
   </div>
+
 </div>
 
  
@@ -347,11 +441,6 @@
   <div id="toast" class="toast"></div>
 
 <script>
-  //const API_URL = "https://script.google.com/macros/s/AKfycbxgAB9C9ETjwsUxNh1YEz13LxCE9HfxcDYOn5TbTG6R9Drk9GpULyeu2UY7Ygdcgpke1A/exec";
-  //const API_URL = "https://corsproxy.io/?" + encodeURIComponent(
-  //"https://script.google.com/macros/s/AKfycbxgAB9C9ETjwsUxNh1YEz13LxCE9HfxcDYOn5TbTG6R9Drk9GpULyeu2UY7Ygdcgpke1A/exec"
-//);
-
   
   let profiles = [], currentIndex = 0;
   
@@ -463,12 +552,34 @@
   function nextProfile() { if (currentIndex < profiles.length - 1) { currentIndex++; displayProfile(); } }
   function firstProfile() { currentIndex = 0; displayProfile(); showToast("First profile"); }
 
-  function Createcon() { 
-  copyText('oldusername');
-  window.location.href = "shortcuts://run-shortcut?name=CreateIGCon"; 
+  function Createcon() {
+  // Get both values
+  const name       = document.getElementById('name').textContent.trim();
+  const oldusername = document.getElementById('oldusername').textContent.trim();
+  
+  // Concat with a space and copy
+  const combined = name + " " + oldusername;
+  
+  if (combined) {
+    navigator.clipboard.writeText(combined);
+    showToast("name + username copied!");  // or showToast(combined + " copied!");
   }
   
+  // Then run your shortcut
+  window.location.href = "shortcuts://run-shortcut?name=CreateIGCon";
+}
+  
   function runCreateTH() { 
+  const name       = document.getElementById('name').textContent.trim();
+  const oldusername = document.getElementById('oldusername').textContent.trim();
+  
+  // Concat with a space and copy
+  const combined = name + " " + oldusername;
+  
+  if (combined) {
+    navigator.clipboard.writeText(combined);
+    showToast("name + username copied!");  // or showToast(combined + " copied!");
+  }
   window.location.href = "shortcuts://run-shortcut?name=CreateTh"; 
   }
   
@@ -529,7 +640,7 @@
     list.innerHTML = "";
     profiles.forEach((p, i) => {
       const li = document.createElement("li");
-      li.textContent = p.name || p.oldusername || "Profile " + (i+1);
+      li.textContent = [p.name, p.oldusername || p.username].filter(Boolean).join(" ") || `Profile ${i+1}`;
       li.onclick = () => { currentIndex = i; displayProfile(); closeModal(); };
       list.appendChild(li);
     });
@@ -538,7 +649,7 @@
   function closeModal() { document.getElementById("profileModal").style.display = "none"; }
   window.onclick = e => { if (e.target === document.getElementById("profileModal")) closeModal(); };
 
-  function lunezaIg2fa() { window.location.href = "luneza2fa.html"; }
+  //function lunezaIg2fa() { window.location.href = "luneza2fa.html"; }
 
   // FULL TOTP CODE (unchanged)
   function base32toBytes(base32) {
@@ -628,81 +739,80 @@
     } catch (e) { alert("Paste blocked"); }
   });
   
-  /*
-  // Toggle IG tools
-  document.getElementById("toggleAdvanced").addEventListener("click", () => {
-  const box = document.getElementById("advancedButtons");
-
-  if (box.style.display === "none") {
-    box.style.display = "block";
-    showToast("IG tools toggled");
-  } else {
-    box.style.display = "none";
-    showToast("IG tools toggled");
-  }
-});
-
-// Toggle Threads tools
-document.getElementById("toggleThreads").addEventListener("click", () => {
-  const box = document.getElementById("threadsButtons");
-  box.style.display = (box.style.display === "none") ? "block" : "none";
-  showToast("Threads tools toggled");
-});
-
-// Toggle Utility tools
-document.getElementById("toggleUtility").addEventListener("click", () => {
-  const box = document.getElementById("utilityButtons");
-  box.style.display = (box.style.display === "none") ? "block" : "none";
-  showToast("Utility tools toggled");
-});
-*/
+ 
 
 //IP CHECKER
-let userIP = '';
-    let scamalyticsWindow = null;
 
-    // Get IP on page load
-    fetch('https://api.ipify.org?format=json')
-      .then(res => res.json())
-      .then(data => {
-        userIP = data.ip;
-        document.getElementById("ip").textContent = userIP;
-      })
-      .catch(() => {
-        document.getElementById("ip").textContent = "Failed to load IP.";
-      });
+  let userIP = '';
+let previousIP = '';
+let scamalyticsWindow = null;
 
-    function refreshAndOpen() {
-      const btn = document.getElementById("refreshBtn");
+// Initial load (same as before)
+fetch('https://api.ipify.org?format=json')
+  .then(res => res.json())
+  .then(data => {
+    userIP = data.ip;
+    document.getElementById("ip").textContent = userIP;
+    document.getElementById("oldIP").textContent = "No previous IP";
+  })
+  .catch(() => {
+    document.getElementById("ip").textContent = "Failed to load IP.";
+    document.getElementById("oldIP").textContent = "N/A";
+  });
 
-      // Start loading
-      btn.disabled = true;
-      const oldText = btn.innerHTML;
-      btn.innerHTML = "⏳ Loading...";
+function refreshAndOpen() {
+  const btn = document.getElementById("refreshBtn");
+  const oldText = btn.innerHTML;
 
-      // Open a blank tab immediately
-      if (!scamalyticsWindow || scamalyticsWindow.closed) {
-        scamalyticsWindow = window.open('about:blank', '_blank');
+  // Only reset text, keep previous color until new result
+  btn.disabled = true;
+  btn.innerHTML = "Loading...";
+
+  if (!scamalyticsWindow || scamalyticsWindow.closed) {
+    scamalyticsWindow = window.open('about:blank', '_blank');
+  }
+
+  fetch('https://api.ipify.org?format=json')
+    .then(res => res.json())
+    .then(data => {
+      const newIP = data.ip;
+
+      // Save current IP as old BEFORE updating
+      if (userIP) {
+        previousIP = userIP;
+        document.getElementById("oldIP").textContent = previousIP;
       }
 
-      // Fetch new IP and update
-      fetch('https://api.ipify.org?format=json')
-        .then(res => res.json())
-        .then(data => {
-          userIP = data.ip;
-          document.getElementById("ip").textContent = userIP;
+      userIP = newIP;
+      document.getElementById("ip").textContent = userIP;
 
-          const url = `https://scamalytics.com/ip/${userIP}`;
-          scamalyticsWindow.location.href = url;
-          scamalyticsWindow.focus();
-        })
-        .finally(() => {
-          // End loading
-          btn.innerHTML = oldText;
-          btn.disabled = false;
-        });
-    }
-  
+      // Open Scamlytics
+      const url = `https://scamalytics.com/ip/${userIP}`;
+      scamalyticsWindow.location.href = url;
+      scamalyticsWindow.focus();
+
+      // PERMANENT color & text (stays until next click)
+      if (previousIP && previousIP === userIP) {
+        // IP DID NOT CHANGE → RED + stays red
+        btn.style.backgroundColor = "#d32f2f";
+        btn.style.color = "white";
+        btn.innerHTML = "No Change 🔄";
+      } else {
+        // IP CHANGED → GREEN + stays green
+        btn.style.backgroundColor = "#2e7d32";
+        btn.style.color = "white";
+        btn.innerHTML = "Changed! 🔄";
+      }
+    })
+    .catch(() => {
+      btn.style.backgroundColor = "#b71c1c";
+      btn.style.color = "white";
+      btn.innerHTML = "Failed";
+    })
+    .finally(() => {
+      btn.disabled = false;
+    });
+}
     //IP Rotation link
 	function rotateIP() {
   const btn = document.getElementById("rotateBtn");
