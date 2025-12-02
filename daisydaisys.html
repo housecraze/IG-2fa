@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DaisySMS IG - Tap Number & Code</title>
+    
+</head>
+<body>
+    <h1>DaisySMS → Instagram</h1>
+
+    <!-- DAISYSMS MINI PANEL - BEAUTIFUL & COMPACT -->
+<div style="font-family:system-ui;background:#000;color:#0f0;padding:16px;border-radius:16px;border:2px solid #0f0;max-width:380px;margin:15px auto;box-shadow:0 0 20px #0f03;">
+    <div style="text-align:center;font-weight:bold;font-size:17px;letter-spacing:1px;margin-bottom:12px;">
+        DaisySMS → Instagram
+    </div>
+
+    <!-- TAP TO COPY NUMBER (clean blue box) -->
+    <div id="miniPhone" onclick="copyPhone(this)" 
+         style="background:#001122;color:#0ff;padding:14px;border-radius:12px;border:2px solid #0ff;
+                text-align:center;font-weight:bold;font-size:22px;cursor:pointer;margin:10px 0;word-break:break-all;">
+        Tap "Rent" to get number
+    </div>
+
+    <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:10px 0;">
+        <button onclick="getBalance()"    style="flex:1;min-width:90px;padding:11px;background:#28a745;color:white;border:none;border-radius:10px;font-size:14px;font-weight:bold;cursor:pointer;">Balance</button>
+        <button onclick="rentIGNumber()"  style="flex:1;min-width:90px;padding:11px;background:#007bff;color:white;border:none;border-radius:10px;font-size:14px;font-weight:bold;cursor:pointer;">Rent IG</button>
+        <button onclick="cancelNumber()"  style="flex:1;min-width:90px;padding:11px;background:#dc3545;color:white;border:none;border-radius:10px;font-size:14px;font-weight:bold;cursor:pointer;">Cancel</button>
+    </div>
+
+    <!-- Small pulsing waiting -->
+    <div id="miniWait" style="margin:12px 0;padding:10px;background:#220000;color:#f66;border:2px dashed #f00;border-radius:10px;text-align:center;font-weight:bold;font-size:15px;display:none;animation:pulse 2s infinite;">
+        Waiting for code...
+    </div>
+
+    <!-- TAP TO COPY CODE (green glow) -->
+    <div id="miniCode" onclick="copyCode(this)" 
+         style="background:#001a00;color:#0f0;padding:18px;border-radius:14px;border:3px solid #0f0;
+                text-align:center;font-size:36px;font-weight:bold;letter-spacing:4px;cursor:pointer;margin:12px 0;
+                display:none;box-shadow:0 0 15px #0f0;">
+        000000
+    </div>
+
+    <!-- Tiny log (optional) -->
+    <div id="miniLog" style="font-family:monospace;font-size:11px;color:#0a0;height:70px;overflow:auto;background:#111;padding:8px;border-radius:8px;margin-top:8px;"></div>
+</div>
+
+<style>
+    @keyframes pulse { 0%,100% {opacity:0.7} 50% {opacity:1} }
+</style>
+
+<script>
+    const API_KEY = 'G1wJwY6tehQmO7uiX3v7nCTSZrU3oc';
+    const BASE = 'https://daisysms.com/stubs/handler_api.php';
+    const P = u => `https://corsproxy.io/?${encodeURIComponent(u)}`;
+
+    const phone = document.getElementById('miniPhone');
+    const code  = document.getElementById('miniCode');
+    const wait  = document.getElementById('miniWait');
+    const logEl = document.getElementById('miniLog');
+
+    let rentalId = null, phoneNum = null, poll = null;
+
+    function log(t){ logEl.innerHTML += t + '<br>'; logEl.scrollTop = 9999; }
+
+    async function api(a, p={}){
+        let u = `${BASE}?api_key=${API_KEY}&action=${a}`;
+        for(let k in p) u += `&${k}=${p[k]}`;
+        const r = await fetch(P(u));
+        const body = (await r.text()).trim();
+        const h = {}; r.headers.forEach((v,k)=>h[k.toLowerCase()]=v);
+        return {body, h};
+    }
+
+    async function getBalance(){
+        const {body} = await api('getBalance');
+        if(body.startsWith('ACCESS_BALANCE:')) log('Balance: $'+body.split(':')[1]);
+    }
+
+    async function rentIGNumber(){
+        const {body} = await api('getNumber', {service:'ig', max_price:'0.8'});
+        if(body.startsWith('ACCESS_NUMBER:')){
+            const [_, id, num] = body.split(':');
+            rentalId = id; phoneNum = num;
+            phone.textContent = num;
+            wait.style.display = 'block';
+            code.style.display = 'none';
+            log('Rented: '+num);
+            startPoll();
+        } else { phone.textContent = 'Failed'; log('Failed: '+body); }
+    }
+
+    async function check(){
+        if(!rentalId) return;
+        const {body, h} = await api('getStatus', {id:rentalId, text:1});
+        let c = null;
+        if(body.includes('STATUS_OK')){
+            const m = body.match(/\d{4,8}/) || (h['x-text']||'').match(/\d{4,8}/);
+            if(m) c = m[0];
+        }
+        if(c){
+            code.textContent = c;
+            code.style.display = 'block';
+            wait.style.display = 'none';
+            log('CODE: '+c);
+            clearInterval(poll); poll=null;
+        }
+    }
+
+    function startPoll(){ if(poll) clearInterval(poll); poll=setInterval(check,6000); check(); }
+
+    function copyPhone(el){
+        if(!phoneNum) return;
+        navigator.clipboard.writeText(phoneNum);
+        el.textContent='Copied!';
+        setTimeout(()=>el.textContent=phoneNum,1200);
+    }
+
+    function copyCode(el){
+        const c = el.textContent;
+        navigator.clipboard.writeText(c);
+        el.textContent='Copied!';
+        setTimeout(()=>el.textContent=c,1500);
+    }
+
+    async function cancelNumber(){
+        if(!rentalId) return;
+        const {body} = await api('setStatus',{id:rentalId, status:8});
+        if(body.includes('ACCESS_CANCEL')){
+            log('Canceled & refunded');
+            phone.textContent = 'Canceled';
+            wait.style.display = code.style.display = 'none';
+            clearInterval(poll); poll=null; rentalId=phoneNum=null;
+        }
+    }
+
+    getBalance();
+</script>
+</body>
+</html>
