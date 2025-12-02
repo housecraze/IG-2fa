@@ -481,6 +481,39 @@
           showToast("Network error");
       }
     }
+
+     // PASTE BUTTON — FULL ORIGINAL FUNCTION
+    document.getElementById('pasteBtn').addEventListener('click', async () => {
+      try {
+        const text = await navigator.clipboard.readText();
+        document.getElementById('secret').value = text.trim();
+        update(); // refreshes the TOTP instantly
+        showToast("Secret pasted!");
+      } catch (e) {
+        showToast("Paste blocked – allow clipboard access");
+      }
+    });
+    
+    // COPY BUTTON — FULL ORIGINAL FUNCTION
+    document.getElementById('copyBtn').addEventListener('click', async () => {
+      const code = document.getElementById('totp').textContent.trim();
+      if (code && code !== "------" && code !== "invalid") {
+        await navigator.clipboard.writeText(code);
+        document.getElementById('copyBtn').textContent = "Copied!";
+        setTimeout(() => document.getElementById('copyBtn').textContent = "C", 1200);
+        showToast("Code copied!");
+      }
+    });
+    
+    // BONUS: Click on the authenticator field itself to copy the secret (your original feature)
+    document.getElementById("newusername").addEventListener("click", async () => {
+      const val = document.getElementById("newusername").textContent.trim();
+      if (val) {
+        await navigator.clipboard.writeText(val);
+        showToast("2FA secret copied!");
+      }
+    });
+     
     function prevProfile() { if (currentIndex > 0) { currentIndex--; displayProfile(); } }
     function nextProfile() { if (currentIndex < profiles.length - 1) { currentIndex++; displayProfile(); } }
     function firstProfile() { currentIndex = 0; displayProfile(); showToast("First profile"); }
