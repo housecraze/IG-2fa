@@ -347,7 +347,7 @@
   <div id="utilityButtons">
     <div class="floating-btn floating-refresh" style="background:#ff4081" onclick="loadProfiles()">🔄️</div>
     <div class="floating-btn floating-random" style="background:#3949ab" onclick="randomCelebrity()">🎲</div>
-    <div class="floating-btn floating-bio" style="background:#8e24aa" onclick="randomBio(); openCurrentIG()">🌸</div>
+    <div class="floating-btn floating-bio" style="background:#8e24aa" onclick="randomBio(); openCurrentIGBio()">🌸</div>
     <div class="floating-btn floating-caption" style="background:#00897b" onclick="randomCaption(); openCurrentIG()">📝</div>
     <div class="floating-btn floating-first" style="background:#ff8f00" onclick="firstProfile()">🥇</div>
     <div class="floating-btn floating-list" style="background:#43a047" onclick="showProfileList()">📂</div>
@@ -542,6 +542,9 @@
     }
     function openCurrentIG() {
       window.open("https://instagram.com/", "_blank");
+    }
+     function openCurrentIGBio() {
+      window.open("https://www.instagram.com/accounts/edit/", "_blank");
     }
     function openCurrentTG() {
       window.open("https://threads.net/", "_blank");
